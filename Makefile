@@ -4,11 +4,14 @@ OPTS:=-v --vapidir=./vapi/
 SRC:=$(wildcard ./*.vala)
 GSRC:=$(wildcard ./*.gs)
 
-PKGS:=--pkg gl --pkg glfw3 
+PKGS:=--pkg gl \
+	--pkg glfw3 
 INCLUDES:=-X -I./glfw/include/ \
 	-X -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/ 
 LIBS:=-X -L./glfw/lib-arm64/ -X -lglfw3 
-FRAMEWORKS:=-X -framework -X Cocoa -X -framework -X IOKit -X -framework -X OpenGL 
+FRAMEWORKS:=-X -framework -X Cocoa \
+	-X -framework -X IOKit \
+	-X -framework -X OpenGL 
 
 APPNAME:=app
 
