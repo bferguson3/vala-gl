@@ -14,6 +14,15 @@ meson
 ninja
 sudo ninja install
 ```
+The project will not compile until you comment out these lies in epoxy/gl.h`:
+```
+//#if defined(__gl_h_) || defined(__glext_h_)
+//#error epoxy/gl.h must be included before (or in place of) GL/gl.h
+//#else
+#define __gl_h_
+#define __glext_h_
+//#endif
+```
 For this project:
 ```
 make
