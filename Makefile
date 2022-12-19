@@ -4,15 +4,16 @@ OPTS:=-v --vapidir=./vapi/
 SRC:=$(wildcard ./*.vala)
 GSRC:=$(wildcard ./*.gs)
 
-PKGS:=--pkg gl \
-	--pkg glfw3 \
-	--pkg gio-2.0
-INCLUDES:=-X -I./glfw/include/ \
-	-X -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/ 
-LIBS:=-X -L./glfw/lib-arm64/ -X -lglfw3 
+PKGS:=--pkg glfw3 \
+	--pkg gl \
+	--pkg gio-2.0 
+INCLUDES:=	-X -I/opt/homebrew/include/ \
+	-X -I./glfw/include/ 
+#	-X -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/ 
+LIBS:=-X -L/opt/homebrew/lib/ -X -lepoxy -X -L./glfw/lib-arm64/ -X -lglfw3
 FRAMEWORKS:=-X -framework -X Cocoa \
-	-X -framework -X IOKit \
-	-X -framework -X OpenGL 
+	-X -framework -X IOKit 
+#	-X -framework -X OpenGL 
 
 APPNAME:=app
 

@@ -1,9 +1,20 @@
 # OpenGL on MacOS with Vala / Genie
-Using GLFW3 libraries, OpenGL from XCode frameworks etc.<br>
+Using GLFW3 libraries and Epoxy GL implementation.<br>
 ## IMPORTANT:
-Check the Makefile and adjust your location of gl.h accordingly: ```Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/```
-is just where one happens to be on my system. <br>
-Additionally, make sure the latest glfw release is extracted to the project path+`/glfw`.
+No longer needs a reference to the system gl.h.
+## Requires GLFW3 in the project root /glfw!
+```
+https://github.com/glfw/glfw/releases
+```
+## Requires Epoxy GL implementation!
+```
+git clone https://github.com/anholt/libepoxy && cd libepoxy
+mkdir _build && cd _build
+meson
+ninja
+sudo ninja install
+```
+For this project:
 ```
 make
 ```
