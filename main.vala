@@ -1,12 +1,16 @@
 //using GLFW; // <- make sure you have this bad boy!
 using GL;
-// we dont need to "include" these, as they are included at compile-time.
 
 static int main(string[] args)
 {
-    stdout.printf("hw\n");
-    
-    GLFW.glinit();
+    // Init GLFW
+    if(!GLFW.glinit())
+    {
+        stderr.printf("GLFW init failed!\n");
+    };
+
+    GLFW.set_hint_bool(GLFW.WindowHint.RESIZABLE, false);
+    GLFW.set_hint(GLFW.WindowHint.SAMPLES, 0);
     
     var myNewWindow = new GLFW.Window(1280, 720, "Hello World", null, null);
     

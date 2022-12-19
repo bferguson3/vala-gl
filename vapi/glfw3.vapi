@@ -335,15 +335,15 @@ namespace GLFW {
 		OPENGL_DEBUG_CONTEXT,
 		OPENGL_PROFILE;
 
-		[CCode (cname="glfwWindowHint")]
-		public void set (int value);
-
-		[CCode (cname="glfwWindowHint")]
-		public void set_bool (bool value);
-
-		[CCode (cname = "glfwDefaultWindowHints")]
-		public static void set_defaults ();
 	}
+	[CCode (cname="glfwWindowHint")]
+	public void set_hint (WindowHint e, int value);
+
+	[CCode (cname="glfwWindowHint")]
+	public void set_hint_bool (WindowHint e, bool value);
+
+	[CCode (cname = "glfwDefaultWindowHints")]
+	public static void set_default_hints ();
 
 	[CCode (cname = "int", has_type_id = false)]
 	public enum OpenGLProfile {
