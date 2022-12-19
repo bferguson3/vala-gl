@@ -25,6 +25,8 @@ namespace GL
 {
 	[CCode (cname="GLenum")]
 	public struct GLenum : uint { }
+	[CCode (cname="GLsizeiptr")]
+	public struct GLsizeiptr : int { }
 	[CCode (cname="GLboolean")]
 	public struct GLboolean : bool { }
 	[CCode (cname="GLbitfield")]
@@ -33,6 +35,8 @@ namespace GL
 	public struct GLvoid { }
 	[CCode (cname="GLbyte")]
 	public struct GLbyte : char { }
+	[CCode (cname="GLchar")]
+	public struct GLchar : char { }
 	[CCode (cname="GLshort")]
 	public struct GLshort : short { }
 	[CCode (cname="GLint")]
@@ -957,6 +961,12 @@ namespace GL
 	public static void glDepthFunc (GLenum func);
 	public static void glDepthMask (GLboolean flag);
 	public static void glDepthRange (GLclampd near_val, GLclampd far_val);
+	
+	// Vertex buffers
+	// TODO
+	public static void glGenBuffers(GLsizei n, GLuint* buffers);
+	public static void glBindBuffer(GLenum target, GLuint buffer);
+	public static void glBufferData(GLenum target, GLsizeiptr size, GLvoid* data, GLenum usage);
 
 	// Accumulation Buffer
 	public static void glClearAccum (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
@@ -1147,6 +1157,14 @@ namespace GL
 	public static void glDrawArrays (GLenum mode, GLint first, GLsizei count);
 	public static void glDrawElements (GLenum mode, GLsizei count, GLenum type, GLvoid* indices);
 	public static void glInterleavedArrays (GLenum format, GLsizei stride, GLvoid* pointer);
+
+	// TODO
+	// Shaders
+	public static void glShaderSource(GLuint shader, GLsizei count, GLchar** string, GLint* length);
+	public static GLuint glCreateShader(GLenum shaderType);
+	public static void glCompileShader(GLuint shader);
+	public static void glGetShaderiv(GLuint shader, GLenum pname, GLint *params);
+	public static void glGetShaderInfoLog(GLuint shader, GLsizei maxLength, GLsizei *length, GLchar *infoLog);
 
 	// Lighting
 	public static void glShadeModel (GLenum mode);
