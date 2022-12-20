@@ -56,7 +56,7 @@ static int main(string[] args)
     ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
     sp.linkAndUse();        // "position" attrib ptr initialized on "use". cant be done before use()
     sp.SetVertexShape(2, GL_FLOAT); // configure the shader to use n(x,y)f format, uses current VAO
-    sp.SetUniform("triangleColor", GL_FLOAT_VEC3, new Vector.3f(1.0f, 0.0f, 0.0f)); // set color 
+    sp.SetUniform("triangleColor", new Vector.3f(1.0f, 0.0f, 0.0f)); // set color 
     
     double secondCtr = 0;
     int frameCtr = 0;
@@ -77,7 +77,7 @@ static int main(string[] args)
         
         glDrawArrays(GL_TRIANGLES, 0, 3); // triangle, from vertex 0 to 3
         
-        
+
         myNewWindow.swap_buffers();
 
 

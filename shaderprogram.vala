@@ -93,9 +93,9 @@ public class ShaderProgram : GLib.Object
         }
     }
 
-    public void SetUniform(string name, GLenum type, Vector v)
+    public void SetUniform(string name, Vector v)
     {
-        switch(type)
+        switch(v.vecType)
         {
             case GL_FLOAT_VEC2:
                 glUniform2f(glGetUniformLocation(program, name), 
