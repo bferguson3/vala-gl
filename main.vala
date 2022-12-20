@@ -3,13 +3,14 @@ using GL;
 
 static int main(string[] args)
 {
+    glGetError();   // this is to fix include pattern
     // Init GLFW
     if(!GLFW.glinit())
     {
         stderr.printf("GLFW init failed!\n");
         return -1;
     }
-    
+
     // WINDOW SETUP
     // MacOS bullshit:
     GLFW.set_hint(GLFW.WindowHint.CONTEXT_VERSION_MAJOR, 4);
@@ -25,12 +26,10 @@ static int main(string[] args)
     myNewWindow.make_context_current();
 
     // VERTEX SETUP
-    // create vertex attribute array 
-    VertexAttributeArray vao = new VertexAttributeArray();
-    vao.bind(); // <- from now on, glVertexAttribPointer points to vao
-    // create vertex buffer & bind it 
-    VertexBuffer vbuffer = new VertexBuffer(); 
-    vbuffer.bind(); // < future calls to bufferData go here!
+    VertexAttributeArray vao = new VertexAttributeArray(); // create vertex attribute array 
+    vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
+    VertexBuffer vbuffer = new VertexBuffer(); // create vertex buffer & bind it 
+    vbuffer.bind();                             // < future calls to bufferData go here!
     
     // and buffer the triangle
     const GLfloat vertices[] = {
@@ -47,9 +46,9 @@ static int main(string[] args)
     // Load shader data from file
     Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
     Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
-    // bind, link and attach the shaders
-    ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2);
-    sp.linkAndUse(); // "position" attrib ptr initialized on "use". cant be done before use()
+
+    ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
+    sp.linkAndUse();        // "position" attrib ptr initialized on "use". cant be done before use()
     sp.SetVertexShape(2, GL_FLOAT); // configure the shader to use n(x,y)f format 
     
     // Main Loop 
