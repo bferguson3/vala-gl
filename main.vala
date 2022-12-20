@@ -20,7 +20,7 @@ static int main(string[] args)
 
     var myNewWindow = new GLFW.Window(1280, 720, "Hello World", null, null);
     
-    //myNewWindow.set_size(640, 400);
+    myNewWindow.set_size(640, 400);
     myNewWindow.make_context_current();
 
     // create vertex attribute array 
@@ -44,13 +44,13 @@ static int main(string[] args)
                 GL_STATIC_DRAW);
     
     // Load shader data from file
-    GLuint vshader = LoadShader("simple.vs", GL_VERTEX_SHADER);
-    GLuint fshader = LoadShader("simple.fs", GL_FRAGMENT_SHADER);
+    Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
+    Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
     
     // bind, link and attach the shaders
     GLuint shaderprog = glCreateProgram();
-    glAttachShader(shaderprog, vshader);
-    glAttachShader(shaderprog, fshader);
+    glAttachShader(shaderprog, vs2.shader);
+    glAttachShader(shaderprog, fs2.shader);
     glBindFragDataLocation(shaderprog, 0, "outColor");
     glLinkProgram(shaderprog);
     glUseProgram(shaderprog);
@@ -79,54 +79,17 @@ static int main(string[] args)
     }
     // Cleanup:
     glDeleteProgram(shaderprog);
-    glDeleteShader(fshader);
-    glDeleteShader(vshader);
+    
+    // Shaders delete auto OK 
+    
     //glDeleteBuffers(1, &ebo) element array buffer for later
+    
+    // delete the vertex buffer
     glDeleteBuffers(1, (GLuint[])&vbuffer);
+    // delete this last because it holds the vertex attribute array. 
     glDeleteVertexArrays(1, (GLuint[])&vao);
 
     GLFW.glterminate();
+    
     return 0;
-}
-
-static GLuint LoadShader(string path, GLuint shaderType)
-{
-    var vs_data = LoadShaderText(path);
-
-    GLuint vshader = glCreateShader(shaderType);
-    GLint len = vs_data.length;
-    
-    glShaderSource(vshader, 1, (string[])&vs_data, (GLint[])&len);
-    glCompileShader(vshader);   // and compile it 
-    
-    // Get errors if any:
-    GLint status = 0;
-    glGetShaderiv(vshader, GL_COMPILE_STATUS, (GLint[])&status);
-    
-    if(status == GL_TRUE)
-    {
-        stdout.printf("Shader %p compiled successfully.\n", (void*)vshader);
-        return vshader;
-    }
-    else 
-    {
-        PrintShaderError(vshader);
-        return GL_FALSE;
-    }
-}
-
-static string LoadShaderText(string path)
-{
-    var vs = File.new_for_path(path);
-    Bytes data = vs.load_bytes();
-    string vss = (string)data.get_data();
-    return vss;
-}
-
-static void PrintShaderError(GLuint shader)
-{
-    stdout.printf("Shader compilation failed!.\n");
-    GLubyte errorbuff[512];
-    glGetShaderInfoLog(shader, 512, null, errorbuff);
-    stdout.printf((string)errorbuff);
 }

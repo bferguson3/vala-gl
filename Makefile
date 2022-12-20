@@ -1,5 +1,6 @@
 # For MacOS / M1 silicon (arm64)
 VC:=valac
+ANDROIDCLANG:=/Users/bent/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android21-clang
 OPTS:=-v --vapidir=./vapi/
 SRC:=$(wildcard ./*.vala)
 GSRC:=$(wildcard ./*.gs)
@@ -19,6 +20,15 @@ APPNAME:=app
 
 default: 
 	$(VC) $(OPTS) \
+		$(SRC) \
+		$(PKGS) \
+		$(INCLUDES) \
+		$(LIBS) \
+		$(FRAMEWORKS) \
+		-o $(APPNAME)
+
+c:
+	$(VC) -C $(OPTS) \
 		$(SRC) \
 		$(PKGS) \
 		$(INCLUDES) \
