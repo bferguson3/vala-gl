@@ -89,7 +89,35 @@ public class ShaderProgram : GLib.Object
                 null);
         }
         else { 
-            stdout.printf("Error! GL_FLOAT only supported.\n");
+            stderr.printf("Error! GL_FLOAT only supported.\n");
+        }
+    }
+
+    public void SetUniform(string name, GLenum type, Vector v)
+    {
+        switch(type)
+        {
+            case GL_FLOAT_VEC2:
+                glUniform2f(glGetUniformLocation(program, name), 
+                    (GLfloat)v.x, 
+                    (GLfloat)v.y);
+                break;
+            case GL_FLOAT_VEC3:
+                glUniform3f(glGetUniformLocation(program, name), 
+                    (GLfloat)v.x, 
+                    (GLfloat)v.y, 
+                    (GLfloat)v.z);
+                break;
+            case GL_FLOAT_VEC4:
+                glUniform4f(glGetUniformLocation(program, name), 
+                    (GLfloat)v.x, 
+                    (GLfloat)v.y,
+                    (GLfloat)v.z,
+                    (GLfloat)v.a);
+                break;
+            default:
+                stderr.printf("Error! Uniform type not supported.\n");
+                break;
         }
     }
 }

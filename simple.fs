@@ -1,7 +1,10 @@
 #version 150 core 
+
+uniform vec3 triangleColor;
+
 out vec4 outColor; 
 
 void main()
 {
-    outColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    outColor = vec4(triangleColor, 1.0f);
 }

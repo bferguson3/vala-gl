@@ -3,7 +3,7 @@ using GL;
 
 static int main(string[] args)
 {
-    glGetError();   // this is to fix include pattern
+    GLuint p = 0;
     // Init GLFW
     if(!GLFW.glinit())
     {
@@ -42,21 +42,22 @@ static int main(string[] args)
                 (GLvoid[])vertices, 
                 GL_STATIC_DRAW);
     
-    // SHADER SETUP
+                // SHADER SETUP
     // Load shader data from file
     Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
     Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
-
     ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
     sp.linkAndUse();        // "position" attrib ptr initialized on "use". cant be done before use()
     sp.SetVertexShape(2, GL_FLOAT); // configure the shader to use n(x,y)f format 
+    sp.SetUniform("triangleColor", GL_FLOAT_VEC3, new Vector.3f(1.0f, 0.0f, 0.0f)); // set color 
     
+    Vector bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
     // Main Loop 
     while(!myNewWindow.should_close)
     {
         GLFW.poll_events(); // while not exit...
 
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         glDrawArrays(GL_TRIANGLES, 0, 3); // triangle, from vertex 0 to 3
