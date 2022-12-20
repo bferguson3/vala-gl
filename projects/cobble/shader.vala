@@ -53,13 +53,26 @@ public class Shader : GLib.Object
     }
 
 
+    
     private string LoadShaderText(string path)
     {
         var vs = File.new_for_path(path);
-        Bytes data = vs.load_bytes();
+        
+        char _tmp[1] = { 0 };
+        Bytes data = new Bytes((uint8[])_tmp);
+        
+        try 
+        { 
+            data = vs.load_bytes(); 
+        } catch(Error e) 
+        { 
+            stderr.printf("%s\n", e.message); 
+        }
+        
         string vss = (string)data.get_data();
         return vss;
     }
+
 
 
     private void PrintShaderError(GLuint shader)

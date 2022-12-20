@@ -7,7 +7,6 @@ OPTS   :=-v --vapidir=./vapi/
 ANDROIDCLANG:=/Users/$(USER)/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android21-clang
 
 PROJECT:=.
-
 SRC :=$(wildcard $(PROJECT)/*.vala)
 GSRC:=$(wildcard $(PROJECT)/*.gs)
 
@@ -33,7 +32,7 @@ default:
 		$(INCLUDES) \
 		$(LIBS) \
 		$(FRAMEWORKS) \
-		-o $(APPNAME)
+		-o $(PROJECT)/$(APPNAME)
 
 c:
 	$(VC) -C $(OPTS) \
@@ -42,7 +41,7 @@ c:
 		$(INCLUDES) \
 		$(LIBS) \
 		$(FRAMEWORKS) \
-		-o $(APPNAME)
+		-o $(PROJECT)/$(APPNAME)
 
 genie:
 	$(VC) $(OPTS) \
@@ -51,7 +50,4 @@ genie:
 		$(INCLUDES) \
 		$(LIBS) \
 		$(FRAMEWORKS) \
-		-o $(APPNAME)
-
-clean:
-	rm ./$(APPNAME)
+		-o $(PROJECT)/$(APPNAME)
