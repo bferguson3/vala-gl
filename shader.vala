@@ -20,7 +20,7 @@ public class Shader : GLib.Object
     // destrcutor 
     ~Shader()
     {
-        stdout.printf("Shader %p deleted.\n", (void*)shader);
+        //stdout.printf("Shader %p deleted.\n", (void*)shader);
         glDeleteShader(shader);
     }
 

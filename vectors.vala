@@ -2,7 +2,7 @@
 
 using GL;
 
-public class Vector
+public class Vector : GLib.Object
 {
     public GLfloat x { get; private set; }
     public GLfloat y { get; private set; }
@@ -32,5 +32,7 @@ public class Vector
     }
 
     ~Vector()
-    {}
+    {
+        //stdout.printf("Vector %p deleted.\n", (void*)this);
+    }
 }

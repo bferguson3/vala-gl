@@ -16,7 +16,7 @@ public class VertexBuffer : GLib.Object
     // destructor 
     ~VertexBuffer()
     {
-        stdout.printf("VertexBuffer %p deleted.\n", (void*)buffer);
+        //stdout.printf("VertexBuffer %p deleted.\n", (void*)buffer);
         glDeleteBuffers(1, (GLuint[])&buffer);
     }
 

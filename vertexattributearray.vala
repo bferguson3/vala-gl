@@ -16,7 +16,7 @@ public class VertexAttributeArray : GLib.Object
     // destructor 
     ~VertexAttributeArray()
     {
-        stdout.printf("VertexAttributeArray %p deleted.\n", (void*)_vao);
+        //stdout.printf("VertexAttributeArray %p deleted.\n", (void*)_vao);
         glDeleteVertexArrays(1, (GLuint[])&_vao);
     }
 

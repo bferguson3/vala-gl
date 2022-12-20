@@ -28,8 +28,9 @@ static int main(string[] args)
     // VERTEX SETUP
     VertexAttributeArray vao = new VertexAttributeArray(); // create vertex attribute array 
     vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
-    VertexBuffer vbuffer = new VertexBuffer(); // create vertex buffer & bind it 
-    vbuffer.bind();                             // < future calls to bufferData go here!
+        /* When you want to switch vertex layouts, use a new VAO! */
+    VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
+    vbuffer.bind();                                 // < future calls to bufferData go here!
     
     // and buffer the triangle
     const GLfloat vertices[] = {
@@ -48,7 +49,7 @@ static int main(string[] args)
     Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
     ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
     sp.linkAndUse();        // "position" attrib ptr initialized on "use". cant be done before use()
-    sp.SetVertexShape(2, GL_FLOAT); // configure the shader to use n(x,y)f format 
+    sp.SetVertexShape(2, GL_FLOAT); // configure the shader to use n(x,y)f format, uses current VAO
     sp.SetUniform("triangleColor", GL_FLOAT_VEC3, new Vector.3f(1.0f, 0.0f, 0.0f)); // set color 
     
     Vector bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);

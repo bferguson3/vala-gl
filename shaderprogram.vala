@@ -46,7 +46,7 @@ public class ShaderProgram : GLib.Object
     // des 
     ~ShaderProgram()
     {
-        stdout.printf("ShaderProgram %p deleted.\n", (void*)program);
+        //stdout.printf("ShaderProgram %p deleted.\n", (void*)program);
         glDeleteProgram(program);
     }
 
