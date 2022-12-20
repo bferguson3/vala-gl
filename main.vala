@@ -1,9 +1,15 @@
+// COBBLE 
+// a retro game engine written in vala 
+
 //using GLFW; // <- make sure you have this bad boy!
 using GL;
 
+private static double deltaTime;
+private static Vector bgColor;
+
 static int main(string[] args)
 {
-    GLuint p = 0;
+    GLuint p = 0;   // fix for vala include order 
     // Init GLFW
     if(!GLFW.glinit())
     {
@@ -52,18 +58,41 @@ static int main(string[] args)
     sp.SetVertexShape(2, GL_FLOAT); // configure the shader to use n(x,y)f format, uses current VAO
     sp.SetUniform("triangleColor", GL_FLOAT_VEC3, new Vector.3f(1.0f, 0.0f, 0.0f)); // set color 
     
+    double secondCtr = 0;
+    int frameCtr = 0;
+    
     Vector bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
+    
     // Main Loop 
     while(!myNewWindow.should_close)
     {
+        double frame_start = GLFW.get_time();
+
+
         GLFW.poll_events(); // while not exit...
+
 
         glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         glDrawArrays(GL_TRIANGLES, 0, 3); // triangle, from vertex 0 to 3
         
+        
         myNewWindow.swap_buffers();
+
+
+        double frame_end = GLFW.get_time();
+        deltaTime = frame_end - frame_start;
+        
+        // Print FPS
+        secondCtr += deltaTime;
+        frameCtr++; 
+        if(secondCtr > 1.0f){
+            stdout.printf("%d/", frameCtr);
+            stdout.flush();
+            frameCtr = 0;
+            secondCtr = 0;
+        }
     }
     // Cleanup: objects clean up themselves!
     
