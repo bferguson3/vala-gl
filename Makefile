@@ -11,15 +11,19 @@ SRC :=$(wildcard $(PROJECT)/*.vala)
 GSRC:=$(wildcard $(PROJECT)/*.gs)
 
 PKGS:=\
+	--pkg freeimage \
 	--pkg glfw3 \
 	--pkg gl \
 	--pkg gio-2.0 
 INCLUDES:=\
 	-X -I/opt/homebrew/include/ \
-	-X -I./glfw/include/ 
+	-X -I./glfw/include/ \
+	-X -I/Library/Developer/CommandLineTools/usr/include/c++/v1/ \
+
 LIBS:=\
 	-X -L/opt/homebrew/lib/ -X -lepoxy \
-	-X -L./glfw/lib-arm64/ -X -lglfw3
+	-X -L./glfw/lib-arm64/ -X -lglfw3 \
+	-X -lfreeimage
 FRAMEWORKS:=\
 	-X -framework -X Cocoa \
 	-X -framework -X IOKit 

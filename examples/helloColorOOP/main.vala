@@ -5,6 +5,7 @@ using GL;
 private static double deltaTime;
 private static Vector bgColor;
 
+
 static int main(string[] args)
 {
     GLuint p = 0;   // fix for vala include order 

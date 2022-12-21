@@ -14,7 +14,10 @@ meson
 ninja
 sudo ninja install
 ```
-
+## Requires FreeImage!
+```
+brew install freeimage
+```
 For this project:
 ```
 make PROJECT=<path/to/proj>

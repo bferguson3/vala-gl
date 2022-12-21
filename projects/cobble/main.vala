@@ -12,6 +12,8 @@ private int frameCtr = 0;
 
 static int main(string[] args)
 {
+
+    FreeImage.Initialise(0);
     GLuint p = 0;   // fix for vala include order 
     // Init GLFW
     if(!GLFW.glinit())
@@ -27,6 +29,12 @@ static int main(string[] args)
     VertexAttributeArray vao = new VertexAttributeArray(); // create vertex attribute array 
     vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
     /* When you want to switch vertex layouts, use a new VAO! */
+                // SHADER SETUP
+    // Load shader data from file
+    Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
+    Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
+    ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
+    sp.link();
     
     // define a triangle set of vertices and buffer it 
     // and buffer the triangle
@@ -55,12 +63,7 @@ static int main(string[] args)
     ebuff.bind();
     square.bufferElements();
 
-                // SHADER SETUP
-    // Load shader data from file
-    Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
-    Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
-    ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
-    sp.linkAndUse();        
+    sp.use();        
     
     var posAttr = sp.AddAttrib("position");
     var colAttr = sp.AddAttrib("color");
