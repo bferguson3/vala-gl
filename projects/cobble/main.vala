@@ -27,10 +27,35 @@ static int main(string[] args)
     VertexAttributeArray vao = new VertexAttributeArray(); // create vertex attribute array 
     vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
     /* When you want to switch vertex layouts, use a new VAO! */
-    VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
-    vbuffer.bind();                                 // < future calls to bufferData go here!
     
-    // SHADER SETUP
+    // define a triangle set of vertices and buffer it 
+    // and buffer the triangle
+    // vertex and element data: 
+    GLfloat vertices[] = {
+        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+        -0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  // Bottom-left
+        0.5f, -0.5f, 0.0f, 0.0f, 1.0f // Bottom-right
+    };
+    GLuint elements[] = {
+        0, 1, 2,
+        2, 3, 1
+    };    
+    
+    VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
+    ElementBuffer ebuff = new ElementBuffer();
+
+    Drawable square = new Drawable();
+    square.setVertices(vertices);
+    square.setElements(elements);
+
+    vbuffer.bind();                                 // < future calls to bufferData go here!    
+    square.bufferVertices();
+
+    ebuff.bind();
+    square.bufferElements();
+
+                // SHADER SETUP
     // Load shader data from file
     Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
     Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
@@ -41,9 +66,6 @@ static int main(string[] args)
     var colAttr = sp.AddAttrib("color");
     sp.SetVertexShape(posAttr, 2, GL_FLOAT, 5, 0); // configure the shader to use n(a,b).f format, 
     sp.SetVertexShape(colAttr, 3, GL_FLOAT, 5, 2); // and n(c,d,e).f
-    
-    // define a triangle set of vertices and buffer it 
-    Test_BufferTri();
     
     Vector bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
     glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
@@ -67,7 +89,8 @@ static int main(string[] args)
         // clear screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // draw objects
-        glDrawArrays(GL_TRIANGLES, 0, 3); // triangle, from vertex 0 to 3
+        //glDrawArrays(GL_TRIANGLES, 0, 6); // triangle, from vertex 0 to 3
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (GLvoid[]?)0);
         // flip()
         myNewWindow.swap_buffers();
 
@@ -101,21 +124,6 @@ GLFW.Window SetupWindow()
     myNewWindow.set_size(640, 400);
     myNewWindow.make_context_current();
     return myNewWindow;
-}
-
-void Test_BufferTri()
-{
-    // and buffer the triangle
-    const GLfloat vertices[] = {
-        0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // v1, x y r g b
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // v2, x y r g b
-        -0.5f,-0.5f, 0.0f, 1.0f, 0.0f  // v3, x y r g b
-    };
-     
-    glBufferData(GL_ARRAY_BUFFER, 
-                (GLsizeiptr)sizeof(GLfloat) * vertices.length, 
-                (GLvoid[])vertices, 
-                GL_STATIC_DRAW);
 }
 
 void fps()

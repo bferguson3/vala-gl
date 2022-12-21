@@ -10,14 +10,14 @@ public class VertexBuffer : GLib.Object
     // constructor
     public VertexBuffer()
     {
-        glGenBuffers(1, (GLuint[])&buffer);
+        glGenBuffers(1, (GLuint[])buffer);
     }
 
     // destructor 
     ~VertexBuffer()
     {
         //stdout.printf("VertexBuffer %p deleted.\n", (void*)buffer);
-        glDeleteBuffers(1, (GLuint[])&buffer);
+        glDeleteBuffers(1, (GLuint[])buffer);
     }
 
     // methods
