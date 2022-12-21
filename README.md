@@ -17,10 +17,10 @@ sudo ninja install
 
 For this project:
 ```
-make
+make PROJECT=<path/to/proj>
 ```
 to create the VALA build.
 ```
-make genie
+make genie PROJECT=<path/to/proj>
 ```
 to create the GENIE build. 

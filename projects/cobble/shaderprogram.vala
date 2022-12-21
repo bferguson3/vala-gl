@@ -9,6 +9,7 @@ public class ShaderProgram : GLib.Object
     public GLint posAttrib { get; private set; }
     private weak Shader vertexShader;
     private weak Shader fragmentShader;
+    //public GLint[] attributes { get; private set; }
 
     // con 
     public ShaderProgram()
@@ -51,10 +52,14 @@ public class ShaderProgram : GLib.Object
     }
 
     // funcs
-    private void SetPosAttrib()
+    public GLint AddAttrib(string name) //"position")
     {
-        posAttrib = glGetAttribLocation(program, "position");
-        glEnableVertexAttribArray(posAttrib);
+        GLint newattr = glGetAttribLocation(program, name); //"position");
+        glEnableVertexAttribArray(newattr);
+        //attributes.resize(attributes.length + 1);
+        //attributes[attributes.length - 1] = newattr;
+        //return attributes[attributes.length - 1];
+        return newattr;
     }
 
     public void linkAndUse()
@@ -62,7 +67,8 @@ public class ShaderProgram : GLib.Object
         glLinkProgram(program);
         glUseProgram(program);
         
-        SetPosAttrib();
+        //SetPosAttrib();
+        //AddAttrib("position");
     }
 
     public void link()
@@ -74,19 +80,25 @@ public class ShaderProgram : GLib.Object
     {
         glUseProgram(program);
 
-        SetPosAttrib();
+        //SetPosAttrib();
+        //AddAttrib("position");
     }
     
-    public void SetVertexShape(int ct, GLenum type)
+    public void SetVertexShape(GLint attr,
+        uint8 pointSize, 
+        GLenum type, 
+        uint8 sizeOfAttributes, 
+        uint8 offset)
     {
         if(type == GL_FLOAT)
         {
-            glVertexAttribPointer(posAttrib, 
-                ct, 
+            var ofs = (void*)(offset * sizeof(GLfloat));
+            glVertexAttribPointer(attr, 
+                pointSize, 
                 GL_FLOAT, 
                 (GLboolean)GL_FALSE, 
-                (GLsizei)(ct * sizeof(GLfloat)), 
-                null);
+                (GLsizei)(sizeOfAttributes * sizeof(GLfloat)), 
+                ofs);
         }
         else { 
             stderr.printf("Error! GL_FLOAT only supported.\n");
@@ -97,6 +109,11 @@ public class ShaderProgram : GLib.Object
     {
         switch(v.vecType)
         {
+            case GL_FLOAT:
+                //var val = v.x;
+                glUniform1f(glGetUniformLocation(program, name), 
+                    v.x);
+                break;
             case GL_FLOAT_VEC2:
                 glUniform2f(glGetUniformLocation(program, name), 
                     (GLfloat)v.x, 

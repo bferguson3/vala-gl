@@ -13,6 +13,15 @@ public class Vector : GLib.Object
     public GLenum vecType { get; private set; }
 
     // Constructors
+    public Vector.1f(float _x)
+    {
+        x = _x;
+        y = 0f;
+        z = 0f;
+        a = 0f;
+        vecType = GL_FLOAT;
+    }
+    
     public Vector.2f(float _x, float _y)
     {
         x = _x;
