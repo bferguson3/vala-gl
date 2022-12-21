@@ -24,3 +24,5 @@ to create the VALA build.
 make genie PROJECT=<path/to/proj>
 ```
 to create the GENIE build. 
+
+## All code in this repository, excepting the projects/ folder, is under CC0. 

@@ -1,14 +1,9 @@
-// COBBLE 
-// a retro game engine written in vala 
+// helloColor and OOP
 
-//using GLFW; // <- make sure you have this bad boy!
 using GL;
 
 private static double deltaTime;
 private static Vector bgColor;
-private double runTime;
-private double secondCtr = 0;
-private int frameCtr = 0;
 
 static int main(string[] args)
 {
@@ -48,6 +43,7 @@ static int main(string[] args)
     Vector bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
     glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
 
+    double runTime = 0;
     // Main Loop 
     while(!myNewWindow.should_close)
     {
@@ -76,8 +72,6 @@ static int main(string[] args)
         double frame_end = GLFW.get_time();
         deltaTime = frame_end - frame_start;
         runTime += deltaTime;
-        // Print FPS
-        fps();
     }
     // Cleanup: objects clean up themselves!
     
@@ -116,16 +110,4 @@ void Test_BufferTri()
                 (GLsizeiptr)sizeof(GLfloat) * vertices.length, 
                 (GLvoid[])vertices, 
                 GL_STATIC_DRAW);
-}
-
-void fps()
-{
-    secondCtr += deltaTime;
-    frameCtr++; 
-    if(secondCtr > 1.0f){
-        stdout.printf("%d/", frameCtr);
-        stdout.flush();
-        frameCtr = 0;
-        secondCtr -= 1.0f;
-    }
 }
