@@ -79,7 +79,7 @@ public class Shader : GLib.Object
     {
         stdout.printf("Shader compilation failed!.\n");
         GLubyte errorbuff[512];
-        glGetShaderInfoLog(shader, 512, null, errorbuff);
+        glGetShaderInfoLog(shader, 512, (GLsizei[])null, errorbuff);
         stdout.printf((string)errorbuff);
     }
 

@@ -249,7 +249,7 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", has_target = false)]
 	public delegate unowned string FI_RegExprProc ();
 	[CCode (cheader_filename = "FreeImage.h", has_target = false)]
-	public delegate FreeImage.BOOL FI_SaveProc (FreeImage.FreeImageIO io, FreeImage.FIBITMAP dib, FreeImage.fi_handle handle, int page, int flags, void* data);
+	public delegate FreeImage.BOOL FI_SaveProc (FreeImage.FreeImageIO io,  FreeImage.FIBITMAP* dib, FreeImage.fi_handle handle, int page, int flags, void* data);
 	[CCode (cheader_filename = "FreeImage.h", has_target = false)]
 	public delegate int FI_SeekProc (FreeImage.fi_handle handle, long offset, int origin);
 	[CCode (cheader_filename = "FreeImage.h", has_target = false)]
@@ -555,109 +555,117 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "XPM_DEFAULT")]
 	public const int XPM_DEFAULT;
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AcquireMemory")]
-	public static FreeImage.BOOL AcquireMemory (FreeImage.FIMEMORY stream, FreeImage.BYTE data, FreeImage.DWORD size_in_bytes);
+	public static FreeImage.BOOL AcquireMemory (FreeImage.FIMEMORY stream, FreeImage.BYTE* data, FreeImage.DWORD size_in_bytes);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AdjustBrightness")]
-	public static FreeImage.BOOL AdjustBrightness (FreeImage.FIBITMAP dib, double percentage);
+	public static FreeImage.BOOL AdjustBrightness ( FreeImage.FIBITMAP* dib, double percentage);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AdjustColors")]
-	public static FreeImage.BOOL AdjustColors (FreeImage.FIBITMAP dib, double brightness, double contrast, double gamma, FreeImage.BOOL invert);
+	public static FreeImage.BOOL AdjustColors ( FreeImage.FIBITMAP* dib, double brightness, double contrast, double gamma, FreeImage.BOOL invert);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AdjustContrast")]
-	public static FreeImage.BOOL AdjustContrast (FreeImage.FIBITMAP dib, double percentage);
+	public static FreeImage.BOOL AdjustContrast ( FreeImage.FIBITMAP* dib, double percentage);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AdjustCurve")]
-	public static FreeImage.BOOL AdjustCurve (FreeImage.FIBITMAP dib, FreeImage.BYTE LUT, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
+	public static FreeImage.BOOL AdjustCurve ( FreeImage.FIBITMAP* dib, FreeImage.BYTE* LUT, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AdjustGamma")]
-	public static FreeImage.BOOL AdjustGamma (FreeImage.FIBITMAP dib, double gamma);
+	public static FreeImage.BOOL AdjustGamma ( FreeImage.FIBITMAP* dib, double gamma);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_AppendPage")]
-	public static void AppendPage (FreeImage.FIMULTIBITMAP bitmap, FreeImage.FIBITMAP data);
+	public static void AppendPage (FreeImage.FIMULTIBITMAP bitmap, FreeImage.FIBITMAP* data);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ApplyColorMapping")]
-	public static uint ApplyColorMapping (FreeImage.FIBITMAP dib, FreeImage.RGBQUAD srccolors, FreeImage.RGBQUAD dstcolors, uint count, FreeImage.BOOL ignore_alpha, FreeImage.BOOL swap);
+	public static uint ApplyColorMapping (FreeImage.FIBITMAP* dib, FreeImage.RGBQUAD srccolors, FreeImage.RGBQUAD dstcolors, uint count, FreeImage.BOOL ignore_alpha, FreeImage.BOOL swap);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ApplyPaletteIndexMapping")]
-	public static uint ApplyPaletteIndexMapping (FreeImage.FIBITMAP dib, FreeImage.BYTE srcindices, FreeImage.BYTE dstindices, uint count, FreeImage.BOOL swap);
+	public static uint ApplyPaletteIndexMapping (FreeImage.FIBITMAP* dib, FreeImage.BYTE* srcindices, FreeImage.BYTE* dstindices, uint count, FreeImage.BOOL swap);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_CloneMetadata")]
-	public static FreeImage.BOOL CloneMetadata (FreeImage.FIBITMAP dst, FreeImage.FIBITMAP src);
+	public static FreeImage.BOOL CloneMetadata (FreeImage.FIBITMAP* dst, FreeImage.FIBITMAP* src);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_CloseMemory")]
 	public static void CloseMemory (FreeImage.FIMEMORY stream);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_CloseMultiBitmap")]
 	public static FreeImage.BOOL CloseMultiBitmap (FreeImage.FIMULTIBITMAP bitmap, int flags);
+	
+	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertFromRawBits")]
+	public static FreeImage.FIBITMAP* FreeImage_ConvertFromRawBits(BYTE *bits, int width, int height, int pitch, uint bpp, uint red_mask, uint green_mask, uint blue_mask, BOOL topdown=(BOOL)false);// FI_DEFAULT(FALSE));
+
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To24_555")]
-	public static void ConvertLine16To24_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To24_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To24_565")]
-	public static void ConvertLine16To24_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To24_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To32_555")]
-	public static void ConvertLine16To32_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To32_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To32_565")]
-	public static void ConvertLine16To32_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To32_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To4_555")]
-	public static void ConvertLine16To4_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To4_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To4_565")]
-	public static void ConvertLine16To4_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To4_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To8_555")]
-	public static void ConvertLine16To8_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To8_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16To8_565")]
-	public static void ConvertLine16To8_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16To8_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16_555_To16_565")]
-	public static void ConvertLine16_555_To16_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16_555_To16_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine16_565_To16_555")]
-	public static void ConvertLine16_565_To16_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine16_565_To16_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To16_555")]
-	public static void ConvertLine1To16_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine1To16_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To16_565")]
-	public static void ConvertLine1To16_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine1To16_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To24")]
-	public static void ConvertLine1To24 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine1To24 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To32")]
-	public static void ConvertLine1To32 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine1To32 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To32MapTransparency")]
-	public static void ConvertLine1To32MapTransparency (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette, FreeImage.BYTE table, int transparent_pixels);
+	public static void ConvertLine1To32MapTransparency (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette, FreeImage.BYTE* table, int transparent_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To4")]
-	public static void ConvertLine1To4 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine1To4 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine1To8")]
-	public static void ConvertLine1To8 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine1To8 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine24To16_555")]
-	public static void ConvertLine24To16_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine24To16_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine24To16_565")]
-	public static void ConvertLine24To16_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine24To16_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine24To32")]
-	public static void ConvertLine24To32 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine24To32 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine24To4")]
-	public static void ConvertLine24To4 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine24To4 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine24To8")]
-	public static void ConvertLine24To8 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine24To8 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine32To16_555")]
-	public static void ConvertLine32To16_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine32To16_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine32To16_565")]
-	public static void ConvertLine32To16_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine32To16_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine32To24")]
-	public static void ConvertLine32To24 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine32To24 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine32To4")]
-	public static void ConvertLine32To4 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine32To4 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine32To8")]
-	public static void ConvertLine32To8 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine32To8 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine4To16_555")]
-	public static void ConvertLine4To16_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine4To16_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine4To16_565")]
-	public static void ConvertLine4To16_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine4To16_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine4To24")]
-	public static void ConvertLine4To24 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine4To24 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine4To32")]
-	public static void ConvertLine4To32 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine4To32 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine4To32MapTransparency")]
-	public static void ConvertLine4To32MapTransparency (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette, FreeImage.BYTE table, int transparent_pixels);
+	public static void ConvertLine4To32MapTransparency (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette, FreeImage.BYTE* table, int transparent_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine4To8")]
-	public static void ConvertLine4To8 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels);
+	public static void ConvertLine4To8 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine8To16_555")]
-	public static void ConvertLine8To16_555 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine8To16_555 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine8To16_565")]
-	public static void ConvertLine8To16_565 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine8To16_565 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine8To24")]
-	public static void ConvertLine8To24 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine8To24 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine8To32")]
-	public static void ConvertLine8To32 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine8To32 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine8To32MapTransparency")]
-	public static void ConvertLine8To32MapTransparency (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette, FreeImage.BYTE table, int transparent_pixels);
+	public static void ConvertLine8To32MapTransparency (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette, FreeImage.BYTE* table, int transparent_pixels);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertLine8To4")]
-	public static void ConvertLine8To4 (FreeImage.BYTE target, FreeImage.BYTE source, int width_in_pixels, FreeImage.RGBQUAD palette);
+	public static void ConvertLine8To4 (FreeImage.BYTE* target, FreeImage.BYTE* source, int width_in_pixels, FreeImage.RGBQUAD palette);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertToRawBits")]
-	public static void ConvertToRawBits (FreeImage.BYTE bits, FreeImage.FIBITMAP dib, int pitch, uint bpp, uint red_mask, uint green_mask, uint blue_mask, FreeImage.BOOL topdown);
+	public static void ConvertToRawBits (FreeImage.BYTE* bits, FreeImage.FIBITMAP* dib, int pitch, uint bpp, uint red_mask, uint green_mask, uint blue_mask, FreeImage.BOOL topdown);
+	
+	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ConvertTo32Bits")]
+	public static FreeImage.FIBITMAP* ConvertTo32Bits (FreeImage.FIBITMAP* dib);
+	
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_DeInitialise")]
 	public static void DeInitialise ();
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_DeletePage")]
@@ -665,7 +673,7 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_DeleteTag")]
 	public static void DeleteTag (FreeImage.FITAG tag);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_DestroyICCProfile")]
-	public static void DestroyICCProfile (FreeImage.FIBITMAP dib);
+	public static void DestroyICCProfile (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FIFSupportsExportBPP")]
 	public static FreeImage.BOOL FIFSupportsExportBPP (FreeImage.FREE_IMAGE_FORMAT fif, int bpp);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FIFSupportsExportType")]
@@ -679,37 +687,37 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FIFSupportsWriting")]
 	public static FreeImage.BOOL FIFSupportsWriting (FreeImage.FREE_IMAGE_FORMAT fif);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FillBackground")]
-	public static FreeImage.BOOL FillBackground (FreeImage.FIBITMAP dib, void* color, int options);
+	public static FreeImage.BOOL FillBackground (FreeImage.FIBITMAP* dib, void* color, int options);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FindCloseMetadata")]
 	public static void FindCloseMetadata (FreeImage.FIMETADATA mdhandle);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FindNextMetadata")]
 	public static FreeImage.BOOL FindNextMetadata (FreeImage.FIMETADATA mdhandle, FreeImage.FITAG tag);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FlipHorizontal")]
-	public static FreeImage.BOOL FlipHorizontal (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL FlipHorizontal (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_FlipVertical")]
-	public static FreeImage.BOOL FlipVertical (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL FlipVertical (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetAdjustColorsLookupTable")]
-	public static int GetAdjustColorsLookupTable (FreeImage.BYTE LUT, double brightness, double contrast, double gamma, FreeImage.BOOL invert);
+	public static int GetAdjustColorsLookupTable (FreeImage.BYTE* LUT, double brightness, double contrast, double gamma, FreeImage.BOOL invert);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetBPP")]
-	public static uint GetBPP (FreeImage.FIBITMAP dib);
+	public static uint GetBPP (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetBackgroundColor")]
-	public static FreeImage.BOOL GetBackgroundColor (FreeImage.FIBITMAP dib, FreeImage.RGBQUAD bkcolor);
+	public static FreeImage.BOOL GetBackgroundColor (FreeImage.FIBITMAP* dib, FreeImage.RGBQUAD bkcolor);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetBits")]
-	public static FreeImage.BYTE GetBits (FreeImage.FIBITMAP dib);
+	public static FreeImage.BYTE* GetBits (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetBlueMask")]
-	public static uint GetBlueMask (FreeImage.FIBITMAP dib);
+	public static uint GetBlueMask (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetColorType")]
-	public static FreeImage.FREE_IMAGE_COLOR_TYPE GetColorType (FreeImage.FIBITMAP dib);
+	public static FreeImage.FREE_IMAGE_COLOR_TYPE GetColorType (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetColorsUsed")]
-	public static uint GetColorsUsed (FreeImage.FIBITMAP dib);
+	public static uint GetColorsUsed (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetCopyrightMessage")]
 	public static unowned string GetCopyrightMessage ();
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetDIBSize")]
-	public static uint GetDIBSize (FreeImage.FIBITMAP dib);
+	public static uint GetDIBSize (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetDotsPerMeterX")]
-	public static uint GetDotsPerMeterX (FreeImage.FIBITMAP dib);
+	public static uint GetDotsPerMeterX (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetDotsPerMeterY")]
-	public static uint GetDotsPerMeterY (FreeImage.FIBITMAP dib);
+	public static uint GetDotsPerMeterY (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetFIFCount")]
 	public static int GetFIFCount ();
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetFIFDescription")]
@@ -735,35 +743,35 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetFormatFromFIF")]
 	public static unowned string GetFormatFromFIF (FreeImage.FREE_IMAGE_FORMAT fif);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetGreenMask")]
-	public static uint GetGreenMask (FreeImage.FIBITMAP dib);
+	public static uint GetGreenMask (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetHeight")]
-	public static uint GetHeight (FreeImage.FIBITMAP dib);
+	public static uint GetHeight (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetHistogram")]
-	public static FreeImage.BOOL GetHistogram (FreeImage.FIBITMAP dib, FreeImage.DWORD histo, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
+	public static FreeImage.BOOL GetHistogram (FreeImage.FIBITMAP* dib, FreeImage.DWORD histo, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetImageType")]
-	public static FreeImage.FREE_IMAGE_TYPE GetImageType (FreeImage.FIBITMAP dib);
+	public static FreeImage.FREE_IMAGE_TYPE GetImageType (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetLine")]
-	public static uint GetLine (FreeImage.FIBITMAP dib);
+	public static uint GetLine (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetLockedPageNumbers")]
 	public static FreeImage.BOOL GetLockedPageNumbers (FreeImage.FIMULTIBITMAP bitmap, int pages, int count);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetMemorySize")]
-	public static uint GetMemorySize (FreeImage.FIBITMAP dib);
+	public static uint GetMemorySize (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetMetadata")]
-	public static FreeImage.BOOL GetMetadata (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP dib, string key, FreeImage.FITAG tag);
+	public static FreeImage.BOOL GetMetadata (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP* dib, string key, FreeImage.FITAG tag);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetMetadataCount")]
-	public static uint GetMetadataCount (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP dib);
+	public static uint GetMetadataCount (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetPageCount")]
 	public static int GetPageCount (FreeImage.FIMULTIBITMAP bitmap);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetPitch")]
-	public static uint GetPitch (FreeImage.FIBITMAP dib);
+	public static uint GetPitch (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetPixelColor")]
-	public static FreeImage.BOOL GetPixelColor (FreeImage.FIBITMAP dib, uint x, uint y, FreeImage.RGBQUAD value);
+	public static FreeImage.BOOL GetPixelColor (FreeImage.FIBITMAP* dib, uint x, uint y, FreeImage.RGBQUAD* value);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetPixelIndex")]
-	public static FreeImage.BOOL GetPixelIndex (FreeImage.FIBITMAP dib, uint x, uint y, FreeImage.BYTE value);
+	public static FreeImage.BOOL GetPixelIndex (FreeImage.FIBITMAP* dib, uint x, uint y, FreeImage.BYTE* value);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetRedMask")]
-	public static uint GetRedMask (FreeImage.FIBITMAP dib);
+	public static uint GetRedMask (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetScanLine")]
-	public static FreeImage.BYTE GetScanLine (FreeImage.FIBITMAP dib, int scanline);
+	public static FreeImage.BYTE* GetScanLine (FreeImage.FIBITMAP* dib, int scanline);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetTagCount")]
 	public static FreeImage.DWORD GetTagCount (FreeImage.FITAG tag);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetTagDescription")]
@@ -779,31 +787,35 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetTagValue")]
 	public static void* GetTagValue (FreeImage.FITAG tag);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetTransparencyCount")]
-	public static uint GetTransparencyCount (FreeImage.FIBITMAP dib);
+	public static uint GetTransparencyCount (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetTransparencyTable")]
-	public static FreeImage.BYTE GetTransparencyTable (FreeImage.FIBITMAP dib);
+	public static FreeImage.BYTE* GetTransparencyTable (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetTransparentIndex")]
-	public static int GetTransparentIndex (FreeImage.FIBITMAP dib);
+	public static int GetTransparentIndex (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetVersion")]
 	public static unowned string GetVersion ();
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_GetWidth")]
-	public static uint GetWidth (FreeImage.FIBITMAP dib);
+	public static uint GetWidth (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_HasBackgroundColor")]
-	public static FreeImage.BOOL HasBackgroundColor (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL HasBackgroundColor (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_HasPixels")]
-	public static FreeImage.BOOL HasPixels (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL HasPixels (FreeImage.FIBITMAP* dib);
+
+	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Load")]
+	public static FreeImage.FIBITMAP* Load(FreeImage.FREE_IMAGE_FORMAT fif, char* filename, int flags);
+	
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Initialise")]
 	public static void Initialise (FreeImage.BOOL load_local_plugins_only);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_InsertPage")]
-	public static void InsertPage (FreeImage.FIMULTIBITMAP bitmap, int page, FreeImage.FIBITMAP data);
+	public static void InsertPage (FreeImage.FIMULTIBITMAP bitmap, int page, FreeImage.FIBITMAP* data);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Invert")]
-	public static FreeImage.BOOL Invert (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL Invert (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_IsLittleEndian")]
 	public static FreeImage.BOOL IsLittleEndian ();
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_IsPluginEnabled")]
 	public static int IsPluginEnabled (FreeImage.FREE_IMAGE_FORMAT fif);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_IsTransparent")]
-	public static FreeImage.BOOL IsTransparent (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL IsTransparent (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_JPEGCrop")]
 	public static FreeImage.BOOL JPEGCrop (string src_file, string dst_file, int left, int top, int right, int bottom);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_JPEGTransform")]
@@ -815,49 +827,49 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_JPEGTransformFromHandle")]
 	public static FreeImage.BOOL JPEGTransformFromHandle (FreeImage.FreeImageIO src_io, FreeImage.fi_handle src_handle, FreeImage.FreeImageIO dst_io, FreeImage.fi_handle dst_handle, FreeImage.FREE_IMAGE_JPEG_OPERATION operation, int left, int top, int right, int bottom, FreeImage.BOOL perfect);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_LookupSVGColor")]
-	public static FreeImage.BOOL LookupSVGColor (string szColor, FreeImage.BYTE nRed, FreeImage.BYTE nGreen, FreeImage.BYTE nBlue);
+	public static FreeImage.BOOL LookupSVGColor (string szColor, FreeImage.BYTE* nRed, FreeImage.BYTE* nGreen, FreeImage.BYTE* nBlue);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_LookupX11Color")]
-	public static FreeImage.BOOL LookupX11Color (string szColor, FreeImage.BYTE nRed, FreeImage.BYTE nGreen, FreeImage.BYTE nBlue);
+	public static FreeImage.BOOL LookupX11Color (string szColor, FreeImage.BYTE* nRed, FreeImage.BYTE* nGreen, FreeImage.BYTE* nBlue);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_MovePage")]
 	public static FreeImage.BOOL MovePage (FreeImage.FIMULTIBITMAP bitmap, int target, int source);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Paste")]
-	public static FreeImage.BOOL Paste (FreeImage.FIBITMAP dst, FreeImage.FIBITMAP src, int left, int top, int alpha);
+	public static FreeImage.BOOL Paste (FreeImage.FIBITMAP* dst, FreeImage.FIBITMAP* src, int left, int top, int alpha);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_PreMultiplyWithAlpha")]
-	public static FreeImage.BOOL PreMultiplyWithAlpha (FreeImage.FIBITMAP dib);
+	public static FreeImage.BOOL PreMultiplyWithAlpha (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ReadMemory")]
 	public static uint ReadMemory (void* buffer, uint size, uint count, FreeImage.FIMEMORY stream);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_RegisterExternalPlugin")]
 	public static FreeImage.FREE_IMAGE_FORMAT RegisterExternalPlugin (string path, string format, string description, string extension, string regexpr);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Save")]
-	public static FreeImage.BOOL Save (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIBITMAP dib, string filename, int flags);
+	public static FreeImage.BOOL Save (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIBITMAP* dib, string filename, int flags);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SaveMultiBitmapToHandle")]
 	public static FreeImage.BOOL SaveMultiBitmapToHandle (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIMULTIBITMAP bitmap, FreeImage.FreeImageIO io, FreeImage.fi_handle handle, int flags);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SaveMultiBitmapToMemory")]
 	public static FreeImage.BOOL SaveMultiBitmapToMemory (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIMULTIBITMAP bitmap, FreeImage.FIMEMORY stream, int flags);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SaveToHandle")]
-	public static FreeImage.BOOL SaveToHandle (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIBITMAP dib, FreeImage.FreeImageIO io, FreeImage.fi_handle handle, int flags);
+	public static FreeImage.BOOL SaveToHandle (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIBITMAP* dib, FreeImage.FreeImageIO io, FreeImage.fi_handle handle, int flags);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SaveToMemory")]
-	public static FreeImage.BOOL SaveToMemory (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIBITMAP dib, FreeImage.FIMEMORY stream, int flags);
+	public static FreeImage.BOOL SaveToMemory (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.FIBITMAP* dib, FreeImage.FIMEMORY stream, int flags);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SeekMemory")]
 	public static FreeImage.BOOL SeekMemory (FreeImage.FIMEMORY stream, long offset, int origin);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetBackgroundColor")]
-	public static FreeImage.BOOL SetBackgroundColor (FreeImage.FIBITMAP dib, FreeImage.RGBQUAD bkcolor);
+	public static FreeImage.BOOL SetBackgroundColor (FreeImage.FIBITMAP* dib, FreeImage.RGBQUAD bkcolor);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetChannel")]
-	public static FreeImage.BOOL SetChannel (FreeImage.FIBITMAP dst, FreeImage.FIBITMAP src, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
+	public static FreeImage.BOOL SetChannel (FreeImage.FIBITMAP* dst, FreeImage.FIBITMAP* src, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetComplexChannel")]
-	public static FreeImage.BOOL SetComplexChannel (FreeImage.FIBITMAP dst, FreeImage.FIBITMAP src, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
+	public static FreeImage.BOOL SetComplexChannel (FreeImage.FIBITMAP* dst, FreeImage.FIBITMAP* src, FreeImage.FREE_IMAGE_COLOR_CHANNEL channel);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetDotsPerMeterX")]
-	public static void SetDotsPerMeterX (FreeImage.FIBITMAP dib, uint res);
+	public static void SetDotsPerMeterX (FreeImage.FIBITMAP* dib, uint res);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetDotsPerMeterY")]
-	public static void SetDotsPerMeterY (FreeImage.FIBITMAP dib, uint res);
+	public static void SetDotsPerMeterY (FreeImage.FIBITMAP* dib, uint res);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetMetadata")]
-	public static FreeImage.BOOL SetMetadata (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP dib, string key, FreeImage.FITAG tag);
+	public static FreeImage.BOOL SetMetadata (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP* dib, string key, FreeImage.FITAG tag);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetMetadataKeyValue")]
-	public static FreeImage.BOOL SetMetadataKeyValue (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP dib, string key, string value);
+	public static FreeImage.BOOL SetMetadataKeyValue (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FIBITMAP* dib, string key, string value);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetPixelColor")]
-	public static FreeImage.BOOL SetPixelColor (FreeImage.FIBITMAP dib, uint x, uint y, FreeImage.RGBQUAD value);
+	public static FreeImage.BOOL SetPixelColor (FreeImage.FIBITMAP* dib, uint x, uint y, FreeImage.RGBQUAD value);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetPixelIndex")]
-	public static FreeImage.BOOL SetPixelIndex (FreeImage.FIBITMAP dib, uint x, uint y, FreeImage.BYTE value);
+	public static FreeImage.BOOL SetPixelIndex (FreeImage.FIBITMAP* dib, uint x, uint y, FreeImage.BYTE* value);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetPluginEnabled")]
 	public static int SetPluginEnabled (FreeImage.FREE_IMAGE_FORMAT fif, FreeImage.BOOL enable);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetTagCount")]
@@ -875,25 +887,25 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetTagValue")]
 	public static FreeImage.BOOL SetTagValue (FreeImage.FITAG tag, void* value);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetThumbnail")]
-	public static FreeImage.BOOL SetThumbnail (FreeImage.FIBITMAP dib, FreeImage.FIBITMAP thumbnail);
+	public static FreeImage.BOOL SetThumbnail (FreeImage.FIBITMAP* dib, FreeImage.FIBITMAP* thumbnail);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetTransparencyTable")]
-	public static void SetTransparencyTable (FreeImage.FIBITMAP dib, FreeImage.BYTE table, int count);
+	public static void SetTransparencyTable (FreeImage.FIBITMAP* dib, FreeImage.BYTE* table, int count);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetTransparent")]
-	public static void SetTransparent (FreeImage.FIBITMAP dib, FreeImage.BOOL enabled);
+	public static void SetTransparent (FreeImage.FIBITMAP* dib, FreeImage.BOOL enabled);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SetTransparentIndex")]
-	public static void SetTransparentIndex (FreeImage.FIBITMAP dib, int index);
+	public static void SetTransparentIndex (FreeImage.FIBITMAP* dib, int index);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SwapColors")]
-	public static uint SwapColors (FreeImage.FIBITMAP dib, FreeImage.RGBQUAD color_a, FreeImage.RGBQUAD color_b, FreeImage.BOOL ignore_alpha);
+	public static uint SwapColors (FreeImage.FIBITMAP* dib, FreeImage.RGBQUAD color_a, FreeImage.RGBQUAD color_b, FreeImage.BOOL ignore_alpha);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_SwapPaletteIndices")]
-	public static uint SwapPaletteIndices (FreeImage.FIBITMAP dib, FreeImage.BYTE index_a, FreeImage.BYTE index_b);
+	public static uint SwapPaletteIndices (FreeImage.FIBITMAP* dib, FreeImage.BYTE* index_a, FreeImage.BYTE* index_b);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_TagToString")]
 	public static unowned string TagToString (FreeImage.FREE_IMAGE_MDMODEL model, FreeImage.FITAG tag, string Make);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_TellMemory")]
 	public static long TellMemory (FreeImage.FIMEMORY stream);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Unload")]
-	public static void Unload (FreeImage.FIBITMAP dib);
+	public static void Unload (FreeImage.FIBITMAP* dib);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_UnlockPage")]
-	public static void UnlockPage (FreeImage.FIMULTIBITMAP bitmap, FreeImage.FIBITMAP data, FreeImage.BOOL changed);
+	public static void UnlockPage (FreeImage.FIMULTIBITMAP bitmap, FreeImage.FIBITMAP* data, FreeImage.BOOL changed);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_Validate")]
 	public static FreeImage.BOOL Validate (FreeImage.FREE_IMAGE_FORMAT fif, string filename);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ValidateFromHandle")]
@@ -903,13 +915,13 @@ namespace FreeImage {
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_WriteMemory")]
 	public static uint WriteMemory (void* buffer, uint size, uint count, FreeImage.FIMEMORY stream);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ZLibCRC32")]
-	public static FreeImage.DWORD ZLibCRC32 (FreeImage.DWORD crc, FreeImage.BYTE source, FreeImage.DWORD source_size);
+	public static FreeImage.DWORD ZLibCRC32 (FreeImage.DWORD crc, FreeImage.BYTE* source, FreeImage.DWORD source_size);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ZLibCompress")]
-	public static FreeImage.DWORD ZLibCompress (FreeImage.BYTE target, FreeImage.DWORD target_size, FreeImage.BYTE source, FreeImage.DWORD source_size);
+	public static FreeImage.DWORD ZLibCompress (FreeImage.BYTE* target, FreeImage.DWORD target_size, FreeImage.BYTE* source, FreeImage.DWORD source_size);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ZLibGUnzip")]
-	public static FreeImage.DWORD ZLibGUnzip (FreeImage.BYTE target, FreeImage.DWORD target_size, FreeImage.BYTE source, FreeImage.DWORD source_size);
+	public static FreeImage.DWORD ZLibGUnzip (FreeImage.BYTE* target, FreeImage.DWORD target_size, FreeImage.BYTE* source, FreeImage.DWORD source_size);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ZLibGZip")]
-	public static FreeImage.DWORD ZLibGZip (FreeImage.BYTE target, FreeImage.DWORD target_size, FreeImage.BYTE source, FreeImage.DWORD source_size);
+	public static FreeImage.DWORD ZLibGZip (FreeImage.BYTE* target, FreeImage.DWORD target_size, FreeImage.BYTE* source, FreeImage.DWORD source_size);
 	[CCode (cheader_filename = "FreeImage.h", cname = "FreeImage_ZLibUncompress")]
-	public static FreeImage.DWORD ZLibUncompress (FreeImage.BYTE target, FreeImage.DWORD target_size, FreeImage.BYTE source, FreeImage.DWORD source_size);
+	public static FreeImage.DWORD ZLibUncompress (FreeImage.BYTE* target, FreeImage.DWORD target_size, FreeImage.BYTE* source, FreeImage.DWORD source_size);
 }

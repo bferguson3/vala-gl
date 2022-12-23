@@ -8,14 +8,15 @@ private static double deltaTime;
 private static Vector bgColor;
 private double runTime;
 private double secondCtr = 0;
-private int frameCtr = 0;
+private GLuint frameCtr = 0;
 
 static int main(string[] args)
 {
 
     FreeImage.Initialise(0);
-    GLuint p = 0;   // fix for vala include order 
-    // Init GLFW
+    
+    //GLuint p = 0;   // fix for vala include order 
+    // Init GLFW    
     if(!GLFW.glinit())
     {
         stderr.printf("GLFW init failed!\n");
@@ -49,7 +50,22 @@ static int main(string[] args)
         0, 1, 2,
         2, 3, 1
     };    
-    
+    Image timg = new Image("test.png");
+    timg.print();
+
+    // make new texture from timg and bind it to texture rendering pipeline
+    GLuint tex = 0;
+    glGenTextures(1, (GLuint[])tex); // new()
+    glBindTexture(GL_TEXTURE_2D, tex); // < future calls to TexImage go to this texture. 
+    glTexImage2D(GL_TEXTURE_2D,             // type
+                0,                          // level (for mipmaps)
+                GL_RGBA8,                   // external format
+                128, 24,                    // w, h
+                0,                          // must be 0
+                GL_RGBA, GL_UNSIGNED_BYTE,  // internal format and type
+                (GLvoid[]?)timg.data); // pointer to data 
+
+
     VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
     ElementBuffer ebuff = new ElementBuffer();
 
@@ -70,7 +86,7 @@ static int main(string[] args)
     sp.SetVertexShape(posAttr, 2, GL_FLOAT, 5, 0); // configure the shader to use n(a,b).f format, 
     sp.SetVertexShape(colAttr, 3, GL_FLOAT, 5, 2); // and n(c,d,e).f
     
-    Vector bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
+    bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
     glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
 
     // Main Loop 
@@ -108,6 +124,7 @@ static int main(string[] args)
     // Cleanup: objects clean up themselves!
     
     GLFW.glterminate();
+    FreeImage.DeInitialise();
 
     return 0;
 }
@@ -134,7 +151,7 @@ void fps()
     secondCtr += deltaTime;
     frameCtr++; 
     if(secondCtr > 1.0f){
-        stdout.printf("%d/", frameCtr);
+        stdout.printf("%u/", (uint)frameCtr);
         stdout.flush();
         frameCtr = 0;
         secondCtr -= 1.0f;
