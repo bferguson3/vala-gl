@@ -55,7 +55,7 @@ public class ShaderProgram : GLib.Object
     public GLint AddAttrib(string name) //"position")
     {
         GLint newattr = glGetAttribLocation(program, name); //"position");
-        glEnableVertexAttribArray(newattr);
+        //glEnableVertexAttribArray(newattr);
         //attributes.resize(attributes.length + 1);
         //attributes[attributes.length - 1] = newattr;
         //return attributes[attributes.length - 1];
@@ -90,6 +90,7 @@ public class ShaderProgram : GLib.Object
         uint8 sizeOfAttributes, 
         uint8 offset)
     {
+        glEnableVertexAttribArray(attr);
         if(type == GL_FLOAT)
         {
             var ofs = (void*)(offset * sizeof(GLfloat));

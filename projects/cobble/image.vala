@@ -61,7 +61,10 @@ public class Image : GLib.Object
             for(uint i = 0; i < width; i++)
             {
                 //stdout.printf("%u", GetPixel(i, y));
-                stdout.printf("%u", GetColor(i, y).rgbBlue/255);
+                char o = '.';
+                if(GetColor(i, y).rgbBlue/26 > 0)
+                    o = '1';
+                stdout.printf("%c", o);
             }
             stdout.printf("\n");
         }
