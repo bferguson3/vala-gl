@@ -8,7 +8,7 @@ private static double deltaTime;
 private static Vector bgColor;
 private double runTime;
 private double secondCtr = 0;
-private GLuint frameCtr = 0;
+private GLuint frameCtr  = 0;
 
 static int main(string[] args)
 {
@@ -41,33 +41,26 @@ static int main(string[] args)
     // and buffer the triangle
     // vertex and element data: 
     GLfloat vertices[] = {
-        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-        -0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  // Bottom-left
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f // Bottom-right
+        -0.5f,  0.5f, 
+         1.0f, 0.0f, 0.0f,  // Top-left
+         0.5f,  0.5f, 
+         0.0f, 1.0f, 0.0f,  // Top-right
+        -0.5f, -0.5f, 
+        1.0f, 1.0f, 1.0f,   // Bottom-left
+        0.5f, -0.5f, 
+        0.0f, 0.0f, 1.0f    // Bottom-right
     };
     GLuint elements[] = {
         0, 1, 2,
         2, 3, 1
     };    
-    Image timg = new Image("test.png");
-    timg.print();
-
-    // make new texture from timg and bind it to texture rendering pipeline
-    GLuint tex = 0;
-    glGenTextures(1, (GLuint[])tex); // new()
-    glBindTexture(GL_TEXTURE_2D, tex); // < future calls to TexImage go to this texture. 
-    glTexImage2D(GL_TEXTURE_2D,             // type
-                0,                          // level (for mipmaps)
-                GL_RGBA8,                   // external format
-                128, 24,                    // w, h
-                0,                          // must be 0
-                GL_RGBA, GL_UNSIGNED_BYTE,  // internal format and type
-                (GLvoid[]?)timg.data); // pointer to data 
-
+    //Image timg = new Image("test.png");
+    //timg.print();
+    Texture tex = new Texture(new Image("test.png"));
+    
 
     VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
-    ElementBuffer ebuff = new ElementBuffer();
+    ElementBuffer ebuff  = new ElementBuffer();
 
     Drawable square = new Drawable();
     square.setVertices(vertices);

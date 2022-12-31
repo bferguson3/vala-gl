@@ -35,6 +35,7 @@ public class Image : GLib.Object
 
     ~Image()
     {
+        //stdout.printf("Image %p deleted.\n", _me);
         FreeImage.Unload(_me);
     }
 
