@@ -13327,7 +13327,7 @@ namespace GL {
 	[CCode (cheader_filename = "epoxy/gl.h", cname = "glTexImage1D")]
 	public static void glTexImage1D (GL.GLenum target, GL.GLint level, GL.GLint internalformat, GL.GLsizei width, GL.GLint border, GL.GLenum format, GL.GLenum type, [CCode (array_length = false)] GL.GLvoid[]? pixels);
 	[CCode (cheader_filename = "epoxy/gl.h", cname = "glTexImage2D")]
-	public static void glTexImage2D (GL.GLenum target, GL.GLint level, GL.GLint internalformat, GL.GLsizei width, GL.GLsizei height, GL.GLint border, GL.GLenum format, GL.GLenum type, [CCode (array_length = false)] GL.GLvoid[]? pixels);
+	public static void glTexImage2D (GL.GLenum target, GL.GLint level, GL.GLint internalformat, GL.GLsizei width, GL.GLsizei height, GL.GLint border, GL.GLenum format, GL.GLenum type, [CCode (array_length = false)] GL.GLbyte[]? pixels);
 	[CCode (cheader_filename = "epoxy/gl.h", cname = "glTexImage2DMultisample")]
 	public static void glTexImage2DMultisample (GL.GLenum target, GL.GLsizei samples, GL.GLint internalformat, GL.GLsizei width, GL.GLsizei height, GL.GLboolean fixedsamplelocations);
 	[CCode (cheader_filename = "epoxy/gl.h", cname = "glTexImage2DMultisampleCoverageNV")]
