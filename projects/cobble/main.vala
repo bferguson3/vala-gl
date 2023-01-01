@@ -4,11 +4,12 @@
 //using GLFW; // <- make sure you have this bad boy!
 using GL;
 
+private GLuint frameCtr  = 0;
 private static double deltaTime;
 private static Vector bgColor;
 private double runTime;
 private double secondCtr = 0;
-private GLuint frameCtr  = 0;
+
 
 static int main(string[] args)
 {

@@ -1,4 +1,6 @@
 // just a test!
+GLuint a = 1
+
 uses GLFW 
 uses GL
 

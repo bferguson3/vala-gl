@@ -1,0 +1,36 @@
+PROJECT:=.
+SRC :=$(wildcard $(PROJECT)/*.vala)
+GSRC:=$(wildcard $(PROJECT)/*.gs)
+
+default:
+	@mkdir -p build 
+	valac -C -v $(SRC) $(GSRC) \
+		--pkg emscripten --pkg gl --pkg glfw3 --pkg freeimage --pkg gio-2.0 \
+		--vapidir=./vapi
+	@mv $(PROJECT)/*.c ./build/
+	emcc -pthread \
+		-s USE_WEBGL2=1 -s USE_GLFW=3 -s WASM=1 \
+		-I /opt/homebrew/Cellar/libepoxy/1.5.10/include \
+		-I ../glib-emscripten/target/include \
+		-I ../glib-emscripten/target/include/glib-2.0 \
+		-I ../glib-emscripten/target/lib/glib-2.0/include \
+		-I /opt/homebrew/include \
+		-L /Users/bent/Projects/vala/glib-emscripten/target/lib \
+		-lglib-2.0 -lgio-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+		-L /Users/bent/Projects/vala/wasm32-libs/ \
+		-L /Users/bent/Projects/vala/empoxy/src \
+		-lfreeimage -lz -lffi \
+		-lepoxy \
+		-L ../glib-emscripten/target/lib \
+		-L /opt/homebrew/lib \
+		-v \
+		./build/*.c \
+		-o build/index.html
+	@echo Done.
+	
+run:
+	emrun build/index.html 
+#	node a.out.js
+
+clean:
+	rm -rf build
