@@ -3,28 +3,13 @@
 
 //using GLFW; // <- make sure you have this bad boy!
 using GL;
-
-private GLuint frameCtr  = 0;
-private static double deltaTime;
-private static Vector bgColor;
-private double runTime;
-private double secondCtr = 0;
-
-const int RES_IMG_FORMAT = GL_RGBA8;
+using Cobble;
 
 static int main(string[] args)
 {
-
-    FreeImage.Initialise(0);
+    GLuint GL_COBBLE_START = cobble_start();
+    if(GL_COBBLE_START == -1) return 0xff;
     
-    //GLuint p = 0;   // fix for vala include order 
-    // Init GLFW    
-    if(!GLFW.glinit())
-    {
-        stderr.printf("GLFW init failed!\n");
-        return -1;
-    }
-
     // WINDOW SETUP
     var myNewWindow = SetupWindow();
     
@@ -37,62 +22,35 @@ static int main(string[] args)
     Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
     Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
     ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
-    sp.link();
-    
-    // define a triangle set of vertices and buffer it 
-    // and buffer the triangle
-    // vertex and element data: 
-    GLfloat vertices[] = {
-        -0.5f,  0.5f,       // pos 
-         1.0f, 0.0f, 0.0f,  // color 
-         0.0f, 0.0f,                   // uv Top-left
-         0.5f,  0.5f,       // pos 
-         0.0f, 1.0f, 0.0f,  // color
-         1.0f, 0.0f,                   // uv Top-right
-        -0.5f, -0.5f,       // pos
-        1.0f, 1.0f, 1.0f,   // color
-        0.0f, 1.0f,                   // uv Bottom-left
-        0.5f, -0.5f,        // pos 
-        0.0f, 0.0f, 1.0f,    // color 
-        1.0f, 1.0f                    // uv Bottom-right
-    };
-    GLuint elements[] = {
-        0, 1, 2,
-        2, 3, 1
-    };    
-    //Image timg = new Image("test.png");
-    //timg.print();
+    //sp.link();
+    sp.linkAndUse();
 
     VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
     ElementBuffer ebuff  = new ElementBuffer();
 
-    Drawable square = new Drawable();
-    square.setVertices(vertices);
-    square.setElements(elements);
-
-    vbuffer.bind();                                 // < future calls to bufferData go here!    
-    square.bufferVertices();
-
-    ebuff.bind();
-    square.bufferElements();
-
-    sp.use();        
+    Sprite square = new Sprite(320, 100);
     
+    vbuffer.bind();                                 // < future calls to bufferData go here!    
+    ebuff.bind();
+
     var posAttr = sp.AddAttrib("position");
     var colAttr = sp.AddAttrib("color");
     var texAttr = sp.AddAttrib("texcoord");
-    sp.SetVertexShape(posAttr, 2, GL_FLOAT, 7, 0); // configure the shader to use n(a,b).f format, 
-    sp.SetVertexShape(colAttr, 3, GL_FLOAT, 7, 2); // and n(c,d,e).f
-    sp.SetVertexShape(texAttr, 2, GL_FLOAT, 7, 5); // + n(f,g).f
+    sp.SetVertexShape(posAttr, 2, GL_FLOAT, VERTEX_LENGTH, 0); // configure the shader to use n(a,b).f format, 
+    sp.SetVertexShape(colAttr, 3, GL_FLOAT, VERTEX_LENGTH, 2); // and n(c,d,e).f
+    sp.SetVertexShape(texAttr, 2, GL_FLOAT, VERTEX_LENGTH, 5); // + n(f,g).f
 
-    bgColor = new Vector.3f(0.2f, 0.2f, 0.2f);
+    bgColor = new Vector3(0.2f, 0.2f, 0.2f);
     glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
     
+    // load in the image and then free it, after buffering
     Image img = new Image("test.png");
     Texture tex = new Texture(img);
     tex.buffer();
     img = null; 
-
+    
+    square.setPos(new XYPos(0, 0));
+    
     // Main Loop 
     while(!myNewWindow.should_close)
     {
@@ -106,15 +64,20 @@ static int main(string[] args)
         float fade = (float)
             (Math.sin(runTime) + 1.25f)
             / 2.0f;
-        sp.SetUniform("alpha", new Vector.1f(fade)); // fade color 
+        sp.SetUniform1f("alpha", (Vector1)fade); // fade color 
         
         // Scene draw:
         // clear screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // test move by 1 virtual pixel at a time (vpx)
+        XYPos newpos = new XYPos(square.x + 1, square.y + 1);
+        //square.setXPos(sx); square.setYPos(sy); 
+        square.setPos(newpos);
+        square.draw(); // rename this back to buffer?
+        
         // draw objects
-        //glDrawArrays(GL_TRIANGLES, 0, 6); // if we used an arraybuffer instead
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (GLvoid[]?)0);
+        cobble_draw();
         
         // flip()
         myNewWindow.swap_buffers();

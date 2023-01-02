@@ -1,6 +1,7 @@
 // texture.vala 
 
 using GL;
+using Cobble;
 
 public class Texture : GLib.Object 
 {
@@ -25,7 +26,7 @@ public class Texture : GLib.Object
     
         glTexImage2D(GL_TEXTURE_2D,             // type
                     0,                          // level (for mipmaps)
-                    GL_RGBA8,                   // external format GL_RGBA8
+                    RES_IMG_FORMAT,             // external format GL_RGBA8
                     (GLsizei)myImage.width, 
                     (GLsizei)myImage.height,                    // w, h
                     0,                          // must be 0

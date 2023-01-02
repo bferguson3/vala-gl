@@ -37,7 +37,7 @@ public class Shader : GLib.Object
         
         if(status == GL_TRUE)
         {
-            stdout.printf("Shader %p compiled successfully.\n", (void*)vshader);
+            stdout.printf("Shader %p compiled successfully.\n", &vshader);
             return vshader;
         }
         else 

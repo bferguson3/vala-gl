@@ -97,41 +97,43 @@ public class ShaderProgram : GLib.Object
                 (GLsizei)(sizeOfAttributes * sizeof(GLfloat)), 
                 ofs);
         }
-        else { 
+        else 
+        { 
             stderr.printf("Error! GL_FLOAT only supported.\n");
         }
     }
 
-    public void SetUniform(string name, Vector v)
+    public void SetUniform4f(string name, Vector4 v)  
     {
-        switch(v.vecType)
-        {
-            case GL_FLOAT:
-                //var val = v.x;
-                glUniform1f(glGetUniformLocation(program, name), 
-                    v.x);
-                break;
-            case GL_FLOAT_VEC2:
-                glUniform2f(glGetUniformLocation(program, name), 
-                    (GLfloat)v.x, 
-                    (GLfloat)v.y);
-                break;
-            case GL_FLOAT_VEC3:
-                glUniform3f(glGetUniformLocation(program, name), 
-                    (GLfloat)v.x, 
-                    (GLfloat)v.y, 
-                    (GLfloat)v.z);
-                break;
-            case GL_FLOAT_VEC4:
-                glUniform4f(glGetUniformLocation(program, name), 
-                    (GLfloat)v.x, 
-                    (GLfloat)v.y,
-                    (GLfloat)v.z,
-                    (GLfloat)v.a);
-                break;
-            default:
-                stderr.printf("Error! Uniform type not supported.\n");
-                break;
-        }
+        glUniform4f(glGetUniformLocation(program, name), 
+            (GLfloat)v.x, 
+            (GLfloat)v.y,
+            (GLfloat)v.z,
+            (GLfloat)v.a);
+
+    }
+
+    public void SetUniform3f(string name, Vector3 v)  
+    {
+        glUniform3f(glGetUniformLocation(program, name), 
+            (GLfloat)v.x, 
+            (GLfloat)v.y, 
+            (GLfloat)v.z);
+
+    }
+
+    public void SetUniform2f(string name, Vector2 v)  
+    {
+        glUniform2f(glGetUniformLocation(program, name), 
+            (GLfloat)v.x, 
+            (GLfloat)v.y);
+
+    }
+    
+    public void SetUniform1f(string name, Vector1 v)  
+    {
+        glUniform1f(glGetUniformLocation(program, name), 
+            (GLfloat)v);
+        
     }
 }
