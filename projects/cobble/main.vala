@@ -7,11 +7,10 @@ using Cobble;
 
 static int main(string[] args)
 {
-    GLuint GL_COBBLE_START = cobble_start();
-    if(GL_COBBLE_START == -1) return 0xff;
+    cobble_start();
     
     // WINDOW SETUP
-    var myNewWindow = SetupWindow();
+    var cobbleWindow = SetupWindow();
     
     // VERTEX SETUP
     VertexAttributeArray vao = new VertexAttributeArray(); // create vertex attribute array 
@@ -52,7 +51,7 @@ static int main(string[] args)
     square.setPos(new XYPos(0, 0));
     
     // Main Loop 
-    while(!myNewWindow.should_close)
+    while(!cobbleWindow.should_close)
     {
         double frame_start = GLFW.get_time();
         ////
@@ -80,7 +79,7 @@ static int main(string[] args)
         cobble_draw();
         
         // flip()
-        myNewWindow.swap_buffers();
+        cobbleWindow.swap_buffers();
 
         ////
         double frame_end = GLFW.get_time();
@@ -97,22 +96,6 @@ static int main(string[] args)
     return 0;
 }
 
-GLFW.Window SetupWindow()
-{
-    // MacOS bullshit:
-    GLFW.set_hint(GLFW.WindowHint.CONTEXT_VERSION_MAJOR, 4);
-    GLFW.set_hint(GLFW.WindowHint.CONTEXT_VERSION_MINOR, 1);
-    GLFW.set_hint(GLFW.WindowHint.OPENGL_FORWARD_COMPAT, GL_TRUE);
-    GLFW.set_hint(GLFW.WindowHint.OPENGL_PROFILE, GLFW.OpenGLProfile.CORE);
-    // Normal window setup:
-    GLFW.set_hint_bool(GLFW.WindowHint.RESIZABLE, true);  // resize 
-    GLFW.set_hint(GLFW.WindowHint.SAMPLES, 2);            // no AA
-
-    var myNewWindow = new GLFW.Window(1280, 720, "Hello World", null, null);
-    myNewWindow.set_size(640, 400);
-    myNewWindow.make_context_current();
-    return myNewWindow;
-}
 
 void fps()
 {

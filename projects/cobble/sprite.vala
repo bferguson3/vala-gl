@@ -103,4 +103,9 @@ public class Sprite : Drawable
         bufferVertices();
         bufferElements();
     }
+
+    public void buffer()
+    {
+        draw();
+    }
 }
