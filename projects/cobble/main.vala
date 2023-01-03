@@ -12,26 +12,31 @@ static int main(string[] args)
     // WINDOW SETUP
     var cobbleWindow = SetupWindow();
     
-    // VERTEX SETUP
-    VertexAttributeArray vao = new VertexAttributeArray(); // create vertex attribute array 
-    vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
-    /* When you want to switch vertex layouts, use a new VAO! */
+    bgColor = new Vector3(0.2f, 0.2f, 0.2f);
+    glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
+    
                 // SHADER SETUP
     // Load shader data from file
     Shader vs2 = new Shader("simple.vs", GL_VERTEX_SHADER);
     Shader fs2 = new Shader("simple.fs", GL_FRAGMENT_SHADER);
     ShaderProgram sp = new ShaderProgram.fromShaders(vs2, fs2); // bind, link and attach the shaders
-    //sp.link();
-    sp.linkAndUse();
-
+    sp.link();
+    
+    // VERTEX SETUP
+    VertexAttributeArray vao  = new VertexAttributeArray(); // create vertex attribute array 
+    VertexAttributeArray vao2 = new VertexAttributeArray();
     VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
     ElementBuffer ebuff  = new ElementBuffer();
-
-    Sprite square = new Sprite(320, 100);
+    VertexBuffer vb2   = new VertexBuffer();      // create vertex buffer & bind it to &vao
+    ElementBuffer eb2  = new ElementBuffer();
     
+    vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
+    Sprite square = new Sprite(320, 100);
+    square.setPos(new XYPos(0, 0));
     vbuffer.bind();                                 // < future calls to bufferData go here!    
+    square.bufferVertices();
     ebuff.bind();
-
+    square.bufferElements();
     var posAttr = sp.AddAttrib("position");
     var colAttr = sp.AddAttrib("color");
     var texAttr = sp.AddAttrib("texcoord");
@@ -39,17 +44,29 @@ static int main(string[] args)
     sp.SetVertexShape(colAttr, 3, GL_FLOAT, VERTEX_LENGTH, 2); // and n(c,d,e).f
     sp.SetVertexShape(texAttr, 2, GL_FLOAT, VERTEX_LENGTH, 5); // + n(f,g).f
 
-    bgColor = new Vector3(0.2f, 0.2f, 0.2f);
-    glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
-    
     // load in the image and then free it, after buffering
     Image img = new Image("test.png");
     Texture tex = new Texture(img);
     tex.buffer();
-    img = null; 
-    
-    square.setPos(new XYPos(0, 0));
-    
+    //img = null; 
+
+    vao2.bind();
+    Sprite sq2 = new Sprite(100, 100);
+    sq2.setPos(new XYPos(200, 100));
+    vb2.bind();
+    sq2.bufferVertices();
+    eb2.bind();
+    sq2.bufferElements();
+    sp.SetVertexShape(posAttr, 2, GL_FLOAT, VERTEX_LENGTH, 0); // configure the shader to use n(a,b).f format, 
+    sp.SetVertexShape(colAttr, 3, GL_FLOAT, VERTEX_LENGTH, 2); // and n(c,d,e).f
+    sp.SetVertexShape(texAttr, 2, GL_FLOAT, VERTEX_LENGTH, 5); // + n(f,g).f
+    tex.buffer();
+
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+
     // Main Loop 
     while(!cobbleWindow.should_close)
     {
@@ -71,12 +88,21 @@ static int main(string[] args)
 
         // test move by 1 virtual pixel at a time (vpx)
         XYPos newpos = new XYPos(square.x + 1, square.y + 1);
-        //square.setXPos(sx); square.setYPos(sy); 
-        square.setPos(newpos);
-        square.draw(); // rename this back to buffer?
-        
+        sp.use();
+        vao.bind();
         // draw objects
-        cobble_draw();
+        //cobble_draw();
+        glDrawElements(GL_TRIANGLES, 
+            6, 
+            GL_UNSIGNED_INT, 
+            (GLvoid[]?)0);
+
+        vao2.bind();
+        glDrawElements(GL_TRIANGLES, 
+            6, 
+            GL_UNSIGNED_INT, 
+            (GLvoid[]?)0);
+
         
         // flip()
         cobbleWindow.swap_buffers();

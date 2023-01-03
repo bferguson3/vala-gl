@@ -9,6 +9,14 @@ public class Shader : GLib.Object
     public Shader(string path, GLuint shaderType)
     {
         shader = LoadShader(path, shaderType);
+        // Get errors if any:
+        GLint status = 0;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, (GLint[])&status);
+        
+        if(status == GL_TRUE)
+            stdout.printf("Shader %d compiled successfully.\n", (int)shader);
+        else 
+            PrintShaderError(shader);
     }
 
 
@@ -31,20 +39,7 @@ public class Shader : GLib.Object
         glShaderSource(vshader, 1, (string[])&vs_data, (GLint[])&len);
         glCompileShader(vshader);   // and compile it 
         
-        // Get errors if any:
-        GLint status = 0;
-        glGetShaderiv(vshader, GL_COMPILE_STATUS, (GLint[])&status);
-        
-        if(status == GL_TRUE)
-        {
-            stdout.printf("Shader %p compiled successfully.\n", &vshader);
-            return vshader;
-        }
-        else 
-        {
-            PrintShaderError(vshader);
-            return GL_FALSE;
-        }
+        return vshader;
     }
 
 

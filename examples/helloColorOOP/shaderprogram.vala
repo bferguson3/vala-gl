@@ -90,7 +90,6 @@ public class ShaderProgram : GLib.Object
         uint8 sizeOfAttributes, 
         uint8 offset)
     {
-        glEnableVertexAttribArray(attr);
         if(type == GL_FLOAT)
         {
             var ofs = (void*)(offset * sizeof(GLfloat));
@@ -100,6 +99,9 @@ public class ShaderProgram : GLib.Object
                 (GLboolean)GL_FALSE, 
                 (GLsizei)(sizeOfAttributes * sizeof(GLfloat)), 
                 ofs);
+        
+            glEnableVertexAttribArray(attr);
+        
         }
         else { 
             stderr.printf("Error! GL_FLOAT only supported.\n");

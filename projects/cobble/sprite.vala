@@ -56,41 +56,53 @@ public class Sprite : Drawable
 
     private void setXPos(int _x)
     {
-        int _dx = _x - x;
-        _vertices[VERT_X_INDEX + 0] += _dx * PIXEL_WIDTH;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 1)] += _dx * PIXEL_WIDTH;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 2)] += _dx * PIXEL_WIDTH;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 3)] += _dx * PIXEL_WIDTH;
+        int   _dx = _x - x;
+        float _pw = _dx * PIXEL_WIDTH;
+        
+        _vertices[VERT_X_INDEX + 0] += _pw;
+        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 1)] += _pw;
+        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 2)] += _pw;
+        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 3)] += _pw;
+        
         x = _x;
     }
 
     private void setYPos(int _y)
     {
-        int _dy = _y - y;
-        _vertices[VERT_Y_INDEX + 0] -= _dy * PIXEL_HEIGHT;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 1)] -= _dy * PIXEL_HEIGHT;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 2)] -= _dy * PIXEL_HEIGHT;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 3)] -= _dy * PIXEL_HEIGHT;
+        int   _dy = _y - y;
+        float _ph = _dy * PIXEL_HEIGHT;
+
+        _vertices[VERT_Y_INDEX + 0] -= _ph;
+        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 1)] -= _ph;
+        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 2)] -= _ph;
+        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 3)] -= _ph;
+        
         y = _y;
     }
 
     public void setPos(XYPos pos)
     {
-        int _dx = pos.x - x;
-        int _dy = pos.y - y;
+        int _x = pos.x;
+        int _y = pos.y;
         
-        _vertices[VERT_X_INDEX + 0] += _dx * PIXEL_WIDTH;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 1)] += _dx * PIXEL_WIDTH;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 2)] += _dx * PIXEL_WIDTH;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 3)] += _dx * PIXEL_WIDTH;
+        int _dx = _x - x;
+        int _dy = _y - y;
         
-        _vertices[VERT_Y_INDEX + 0] -= _dy * PIXEL_HEIGHT;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 1)] -= _dy * PIXEL_HEIGHT;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 2)] -= _dy * PIXEL_HEIGHT;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 3)] -= _dy * PIXEL_HEIGHT;
+        float _pw = _dx * PIXEL_WIDTH;
+        float _ph = _dy * PIXEL_HEIGHT;
         
-        x = pos.x;
-        y = pos.y;       
+        _vertices[VERT_X_INDEX + 0] += _pw;
+        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 1)] += _pw;
+        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 2)] += _pw;
+        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 3)] += _pw;
+        
+        _vertices[VERT_Y_INDEX + 0] -= _ph;
+        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 1)] -= _ph;
+        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 2)] -= _ph;
+        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 3)] -= _ph;
+        
+        x = _x;    
+        y = _y; 
     }
 
     public XYPos getPos()
@@ -106,6 +118,7 @@ public class Sprite : Drawable
 
     public void buffer()
     {
-        draw();
+        bufferVertices();
+        bufferElements();
     }
 }
