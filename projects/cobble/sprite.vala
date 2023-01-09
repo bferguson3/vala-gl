@@ -1,11 +1,13 @@
 // sprite 
 
 using Cobble;
+using GL;
 
 public class Sprite : Drawable
 {
-    private GL.GLfloat _vertices[VERTEX_LENGTH * 4];   // for now
+    private GL.GLfloat _vertices[SPRITE_VERTEX_LENGTH * 4];   // for now
     private GL.GLuint  _elements[6];     // for now
+    protected uint _index; // sprite index 
     
     public int x { public get; private set; }
     public int y { public get; private set; }
@@ -39,6 +41,9 @@ public class Sprite : Drawable
         setVertices(_vertices);
         setElements(_elements);
         setSize(myTexWidth, myTexHeight);
+
+        _index = g_SpritesDrawn;
+        g_SpritesDrawn++;
     }
 
     public void setSize(int _w, int _h)
@@ -46,36 +51,32 @@ public class Sprite : Drawable
         w = _w;
         h = _h;
         
-        //base.setSize(_w, _h);
-        
-        //XYPos pos = new XYPos(x, y);
-        //setPos(pos.x, pos.y);
         setXPos(x); 
         setYPos(y);
     }
 
-    private void setXPos(int _x)
+    public void setXPos(int _x)
     {
         int   _dx = _x - x;
         float _pw = _dx * PIXEL_WIDTH;
         
         _vertices[VERT_X_INDEX + 0] += _pw;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 1)] += _pw;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 2)] += _pw;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 3)] += _pw;
+        _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 1)] += _pw;
+        _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 2)] += _pw;
+        _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 3)] += _pw;
         
         x = _x;
     }
 
-    private void setYPos(int _y)
+    public void setYPos(int _y)
     {
         int   _dy = _y - y;
         float _ph = _dy * PIXEL_HEIGHT;
 
         _vertices[VERT_Y_INDEX + 0] -= _ph;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 1)] -= _ph;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 2)] -= _ph;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 3)] -= _ph;
+        _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 1)] -= _ph;
+        _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 2)] -= _ph;
+        _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 3)] -= _ph;
         
         y = _y;
     }
@@ -92,14 +93,14 @@ public class Sprite : Drawable
         float _ph = _dy * PIXEL_HEIGHT;
         
         _vertices[VERT_X_INDEX + 0] += _pw;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 1)] += _pw;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 2)] += _pw;
-        _vertices[VERT_X_INDEX + (VERTEX_LENGTH * 3)] += _pw;
+        _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 1)] += _pw;
+        _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 2)] += _pw;
+        _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 3)] += _pw;
         
         _vertices[VERT_Y_INDEX + 0] -= _ph;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 1)] -= _ph;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 2)] -= _ph;
-        _vertices[VERT_Y_INDEX + (VERTEX_LENGTH * 3)] -= _ph;
+        _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 1)] -= _ph;
+        _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 2)] -= _ph;
+        _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 3)] -= _ph;
         
         x = _x;    
         y = _y; 
@@ -112,10 +113,37 @@ public class Sprite : Drawable
 
     public void draw()
     {
-        bufferVertices();
-        bufferElements();
+        if (vertexBuffer == null)
+            stderr.printf("Buffer on object not set!\n");
+        else 
+        {
+            bufferVertices();
+            bufferElements();
+        }
     }
 
+
+    public void bufferVertices()
+    {
+        //vertexBuffer.bind();
+
+        // TODO change to bufferSubData
+        //glBufferData(GL_ARRAY_BUFFER, 
+        //    (GLsizeiptr)sizeof(GLfloat) * vertices.length, 
+        //    (GLvoid[])vertices, 
+        //    GL_STATIC_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 
+            (GLsizeiptr)sizeof(GLfloat) * _vertices.length * _index, 
+            (GLsizeiptr)sizeof(GLfloat) * _vertices.length, 
+            (GLvoid[])_vertices
+        );
+       //stdout.printf("Sprite #%d buffered\n", (int)_index);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        //g_drawableVerticesCounter++;
+        //g_drawableVerticesNo += vertices.length;
+    }
+    
     public void buffer()
     {
         bufferVertices();

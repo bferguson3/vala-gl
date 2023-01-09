@@ -1,5 +1,6 @@
 // vertexbuffer.vala 
 
+using Cobble;
 using GL;
 
 public class VertexBuffer : GLib.Object
@@ -11,6 +12,16 @@ public class VertexBuffer : GLib.Object
     public VertexBuffer()
     {
         glGenBuffers(1, (GLuint[])buffer);
+    }
+
+    public VertexBuffer.forSpriteCount(uint size)
+    {
+        glGenBuffers(1, (GLuint[])buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, 
+            (GLsizeiptr)sizeof(GLfloat) * size * SPRITE_VERTEX_LENGTH, 
+            null, 
+            GL_STATIC_DRAW);
     }
 
     // destructor 

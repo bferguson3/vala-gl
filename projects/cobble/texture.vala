@@ -6,7 +6,7 @@ using Cobble;
 public class Texture : GLib.Object 
 {
     public GLuint texture { get; private set; }
-    public weak Image? myImage { get; private set; }
+    public Image? myImage { get; private set; }
 
     public Texture(Image img)
     {

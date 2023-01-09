@@ -7,18 +7,27 @@ public class Drawable : GLib.Object
 {
     private weak GLfloat[] vertices;
     private weak GLuint[] elements;
+    protected weak VertexBuffer vertexBuffer;
+    protected weak ElementBuffer elementBuffer;
 
     public Drawable()
     {
 
     }
+
     ~Drawable()
     {
-        g_drawableElementsCounter--;
-        g_drawableElementsNo = g_drawableElementsNo - elements.length;
+        //g_drawableElementsCounter--;
+        //g_drawableElementsNo = g_drawableElementsNo - elements.length;
 
-        g_drawableVerticesCounter--;
-        g_drawableVerticesNo = g_drawableVerticesNo - vertices.length;
+        //g_drawableVerticesCounter--;
+        //g_drawableVerticesNo = g_drawableVerticesNo - vertices.length;
+    }
+
+    public void setBuffers(VertexBuffer vb, ElementBuffer eb)
+    {
+        vertexBuffer = vb;
+        elementBuffer = eb;
     }
 
     public void setVertices(GLfloat[] verts)
@@ -36,25 +45,19 @@ public class Drawable : GLib.Object
     // For a screen position-relative textured quad, use the Sprite{} 
     //  subclass. 
 
-    public void bufferVertices()
-    {
-        glBufferData(GL_ARRAY_BUFFER, 
-            (GLsizeiptr)sizeof(GLfloat) * vertices.length, 
-            (GLvoid[])vertices, 
-            GL_STATIC_DRAW);
 
-        g_drawableVerticesCounter++;
-        g_drawableVerticesNo += vertices.length;
-    }
-
-    public void bufferElements()
+    public virtual void bufferElements()
     {
+        //elementBuffer.bind();
+
         glBufferData(GL_ELEMENT_ARRAY_BUFFER,
             (GLsizeiptr)sizeof(GLuint) * elements.length, 
             (GLvoid[])elements,
             GL_STATIC_DRAW);
         
-        g_drawableElementsCounter++;
-        g_drawableElementsNo += elements.length;
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        //g_drawableElementsCounter++;
+        //g_drawableElementsNo += elements.length;
     }
 }

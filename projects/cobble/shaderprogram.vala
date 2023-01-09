@@ -79,29 +79,6 @@ public class ShaderProgram : GLib.Object
 
     }
     
-    public void SetVertexShape(GLint attr,
-        uint8 pointSize, 
-        GLenum type, 
-        uint8 sizeOfAttributes, 
-        uint8 offset)
-    {
-        glEnableVertexAttribArray(attr);
-        
-        if(type == GL_FLOAT)
-        {
-            var ofs = (void*)(offset * sizeof(GLfloat));
-            glVertexAttribPointer(attr, 
-                pointSize, 
-                GL_FLOAT, 
-                (GLboolean)GL_FALSE, 
-                (GLsizei)(sizeOfAttributes * sizeof(GLfloat)), 
-                ofs);
-        }
-        else 
-        { 
-            stderr.printf("Error! GL_FLOAT only supported.\n");
-        }
-    }
 
     public void SetUniform4f(string name, Vector4 v)  
     {

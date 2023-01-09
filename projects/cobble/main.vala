@@ -24,48 +24,35 @@ static int main(string[] args)
     
     // VERTEX SETUP
     VertexAttributeArray vao  = new VertexAttributeArray(); // create vertex attribute array 
-    VertexAttributeArray vao2 = new VertexAttributeArray();
-    VertexBuffer vbuffer = new VertexBuffer();      // create vertex buffer & bind it to &vao
-    ElementBuffer ebuff  = new ElementBuffer();
-    VertexBuffer vb2   = new VertexBuffer();      // create vertex buffer & bind it to &vao
-    ElementBuffer eb2  = new ElementBuffer();
+    VertexBuffer vbuffer = new VertexBuffer.forSpriteCount(64);     
     
-    vao.bind();                             // <- from now on, glVertexAttribPointer points to vao
+    vao.bind();    
+    
     Sprite square = new Sprite(320, 100);
     square.setPos(new XYPos(0, 0));
-    vbuffer.bind();                                 // < future calls to bufferData go here!    
+    Sprite sq2 = new Sprite(200, 200);
+    sq2.setPos(new XYPos(200, 100));
+
     square.bufferVertices();
-    ebuff.bind();
-    square.bufferElements();
+    sq2.bufferVertices();
+    sq2.setPos(new XYPos(80, 180));
+    sq2.bufferVertices();
+    
     var posAttr = sp.AddAttrib("position");
     var colAttr = sp.AddAttrib("color");
     var texAttr = sp.AddAttrib("texcoord");
-    sp.SetVertexShape(posAttr, 2, GL_FLOAT, VERTEX_LENGTH, 0); // configure the shader to use n(a,b).f format, 
-    sp.SetVertexShape(colAttr, 3, GL_FLOAT, VERTEX_LENGTH, 2); // and n(c,d,e).f
-    sp.SetVertexShape(texAttr, 2, GL_FLOAT, VERTEX_LENGTH, 5); // + n(f,g).f
+    vao.SetVertexShape(posAttr, 2, GL_FLOAT, SPRITE_VERTEX_LENGTH, 0); // configure the shader to use n(a,b).f format, 
+    vao.SetVertexShape(colAttr, 3, GL_FLOAT, SPRITE_VERTEX_LENGTH, 2); // and n(c,d,e).f
+    vao.SetVertexShape(texAttr, 2, GL_FLOAT, SPRITE_VERTEX_LENGTH, 5); // + n(f,g).f
+    
+    
+    // load in the image to a new texture 
+    Texture tex = new Texture(new Image("test.png"));
+    Texture tex2 = new Texture(new Image("test2.png"));
 
-    // load in the image and then free it, after buffering
-    Image img = new Image("test.png");
-    Texture tex = new Texture(img);
-    tex.buffer();
+    unbind_all();
+
     //img = null; 
-
-    vao2.bind();
-    Sprite sq2 = new Sprite(100, 100);
-    sq2.setPos(new XYPos(200, 100));
-    vb2.bind();
-    sq2.bufferVertices();
-    eb2.bind();
-    sq2.bufferElements();
-    sp.SetVertexShape(posAttr, 2, GL_FLOAT, VERTEX_LENGTH, 0); // configure the shader to use n(a,b).f format, 
-    sp.SetVertexShape(colAttr, 3, GL_FLOAT, VERTEX_LENGTH, 2); // and n(c,d,e).f
-    sp.SetVertexShape(texAttr, 2, GL_FLOAT, VERTEX_LENGTH, 5); // + n(f,g).f
-    tex.buffer();
-
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
 
     // Main Loop 
     while(!cobbleWindow.should_close)
@@ -75,37 +62,34 @@ static int main(string[] args)
         
         GLFW.poll_events(); // while not exit...
 
-        // Scene update: 
-        // animate triangle
-        float fade = (float)
-            (Math.sin(runTime) + 1.25f)
-            / 2.0f;
-        sp.SetUniform1f("alpha", (Vector1)fade); // fade color 
-        
-        // Scene draw:
         // clear screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // test move by 1 virtual pixel at a time (vpx)
-        XYPos newpos = new XYPos(square.x + 1, square.y + 1);
         sp.use();
-        vao.bind();
-        // draw objects
-        //cobble_draw();
-        glDrawElements(GL_TRIANGLES, 
-            6, 
-            GL_UNSIGNED_INT, 
-            (GLvoid[]?)0);
-
-        vao2.bind();
-        glDrawElements(GL_TRIANGLES, 
-            6, 
-            GL_UNSIGNED_INT, 
-            (GLvoid[]?)0);
-
+        // animate square // test move by 1 virtual pixel at a time (vpx)
+        //
+        float fade = (float)(Math.sin(runTime) + 1.25f)/ 2.0f;
+        sp.SetUniform1f("alpha", (Vector1)fade); // fade color 
         
-        // flip()
-        cobbleWindow.swap_buffers();
+        // draw objects    
+        vao.bind(); 
+        
+        // if we move a sprite, then we need to re-buffer its vertices 
+        vbuffer.bind();
+        XYPos newpos = new XYPos(sq2.x + 1, sq2.y);
+        sq2.setPos(newpos);
+        sq2.bufferVertices();
+        
+        // otherwise, just sample its texture and draw it as an array offset 
+        // TODO bind the texture etc to the sprite itself.
+        int sprite_index = 0;
+        tex.buffer(); 
+        glDrawArrays(GL_TRIANGLE_STRIP, 4 * (sprite_index++), 4);
+        tex2.buffer();
+        glDrawArrays(GL_TRIANGLE_STRIP, 4 * (sprite_index++), 4);
+        
+        unbind_all();
+
+        cobbleWindow.swap_buffers(); // flip()
 
         ////
         double frame_end = GLFW.get_time();
@@ -133,4 +117,12 @@ void fps()
         frameCtr = 0;
         secondCtr -= 1.0f;
     }
+}
+
+void unbind_all()
+{
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    glUseProgram(0);
 }

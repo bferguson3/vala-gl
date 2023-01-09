@@ -4,7 +4,7 @@ using GL;
 
 namespace Cobble
 {
-    const uint8 VERTEX_LENGTH = 7;
+    const uint8 SPRITE_VERTEX_LENGTH = 7;
     const int RES_IMG_FORMAT = GL.GL_RGBA8;
 
     int SCREEN_WIDTH  = 640;
@@ -15,16 +15,14 @@ namespace Cobble
     const uint8 VERT_X_INDEX = 0;
     const uint8 VERT_Y_INDEX = 1;
 
-    static int g_drawableElementsCounter = 0;
-    static int g_drawableElementsNo = 0;
-    static int g_drawableVerticesCounter = 0;
-    static int g_drawableVerticesNo = 0;
+    static int g_SpritesDrawn = 0;
 
     static uint frameCtr  = 0;
     static double deltaTime;
     static Vector3 bgColor;
     static double runTime;
     static double secondCtr = 0;
+
 
     public static GLuint cobble_start()
     {
@@ -39,21 +37,6 @@ namespace Cobble
         return 0;
     }
 
-
-    public static void cobble_draw()
-    {
-        if(g_drawableElementsCounter > 0)
-        {
-            glDrawElements(GL_TRIANGLES, 
-                g_drawableElementsNo, 
-                GL_UNSIGNED_INT, 
-                (GLvoid[]?)0);
-        }
-        else 
-        {
-            stderr.printf("COBBLE DRAW ERROR: Nothing in element buffer!!\n");
-        }
-    }
 
     public static void set_resolution(int w, int h)
     {
