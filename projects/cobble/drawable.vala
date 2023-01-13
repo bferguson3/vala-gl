@@ -5,10 +5,10 @@ using Cobble;
 
 public class Drawable : GLib.Object
 {
-    private weak GLfloat[] vertices;
+    protected weak GLfloat[] vertices;
     private weak GLuint[] elements;
-    protected weak VertexBuffer vertexBuffer;
-    protected weak ElementBuffer elementBuffer;
+    public weak VertexBuffer vertexBuffer;
+    //protected weak ElementBuffer elementBuffer;
 
     public Drawable()
     {
@@ -24,10 +24,10 @@ public class Drawable : GLib.Object
         //g_drawableVerticesNo = g_drawableVerticesNo - vertices.length;
     }
 
-    public void setBuffers(VertexBuffer vb, ElementBuffer eb)
+    public void setBuffers(VertexBuffer vb, void* eb)
     {
         vertexBuffer = vb;
-        elementBuffer = eb;
+        //elementBuffer = eb;
     }
 
     public void setVertices(GLfloat[] verts)
@@ -35,10 +35,10 @@ public class Drawable : GLib.Object
         vertices = verts;
     }
 
-    public void setElements(GLuint[] els)
-    {
-        elements = els;
-    }
+    //public void setElements(GLuint[] els)
+    //{
+    //    elements = els;
+    //}
 
     // For now, Drawable{} will not set vertices or elements, 
     //  since you may have many different type of drawables at once. 

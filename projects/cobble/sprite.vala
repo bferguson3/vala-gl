@@ -6,19 +6,21 @@ using GL;
 public class Sprite : Drawable
 {
     private GL.GLfloat _vertices[SPRITE_VERTEX_LENGTH * 4];   // for now
-    private GL.GLuint  _elements[6];     // for now
-    protected uint _index; // sprite index 
+    //private GL.GLuint  _elements[6];     // for now
+    public int index { public get; private set; } // sprite index 
+
+    private weak Texture tex { public get; private set; }
     
     public int x { public get; private set; }
     public int y { public get; private set; }
     public int w { public get; private set; }
     public int h { public get; private set; }
 
-    public Sprite(int myTexWidth, int myTexHeight)
+    public Sprite(unowned Texture t, int myTexWidth, int myTexHeight)
     {
         x = (SCREEN_WIDTH  / 2) - (myTexWidth  / 2); 
         y = (SCREEN_HEIGHT / 2) - (myTexHeight / 2);
-        
+        /*
         _vertices = {
             ((float)(myTexWidth/2) * PIXEL_WIDTH * -1), ((float)(myTexHeight/2) * PIXEL_HEIGHT),       // pos 
             1.0f, 1.0f, 1.0f,   // color
@@ -33,17 +35,81 @@ public class Sprite : Drawable
             1.0f, 1.0f, 1.0f,   // color
              1.0f, 1.0f           // uv Bottom-right
         };
-        _elements = {
-            0, 1, 2,
-            2, 3, 1
-        };    
+         */
+         _vertices = {
+            -0.5f, -0.5f,       // pos 
+            1.0f, 1.0f, 1.0f,   // color
+             0.0f, 0.0f,        // uv Top-left
+            0.5f,-0.5f,       // pos 
+            1.0f, 1.0f, 1.0f,   // color
+             1.0f, 0.0f,        // uv Top-right
+            -0.5f, 0.5f,    // pos
+             1.0f, 1.0f, 1.0f,   // color
+             0.0f, 1.0f,         // uv Bottom-left
+            0.5f,  0.5f,    // pos 
+            1.0f, 1.0f, 1.0f,   // color
+             1.0f, 1.0f           // uv Bottom-right
+        };
 
         setVertices(_vertices);
-        setElements(_elements);
+        //setElements(_elements);
         setSize(myTexWidth, myTexHeight);
+        tex = t;
+        //index = g_SpritesDrawn;
+        //g_SpritesDrawn++;
+    }
 
-        _index = g_SpritesDrawn;
-        g_SpritesDrawn++;
+    public Sprite.Copy(Sprite s)
+    {
+        x = s.x;
+        y = s.y;
+        w = s.w;
+        h = s.h;
+        _vertices = s.vertices;
+        setVertices(_vertices);
+        setSize(s.w, s.h);
+        tex = s.tex;
+        //index = g_SpritesDrawn;
+        //g_SpritesDrawn++;
+    }
+
+    ~Sprite()
+    {
+        float[] _verts = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+        setVertices(_verts);
+        bufferVertices();
+        //g_SpritesDrawn--; //fixme 
+    }
+
+    public void SetTexture(Texture t)
+    {
+        tex = t;
+    }
+
+    public void printVerts()
+    {
+        for(int i = 0; i < vertices.length; i++)
+        {
+            stdout.printf("%f\n", vertices[i]);
+        }    
+    }
+    
+    public void draw()
+    {
+        if(tex != null)
+            tex.bufferToSize(w, h);
+        else 
+            stderr.printf("COBBLE ERROR: Sprite %u texture is null\n", index);
+            
+        bufferVertices();
+    }
+
+    public void setIndex(int i)
+    {
+        index = i;
     }
 
     public void setSize(int _w, int _h)
@@ -66,6 +132,8 @@ public class Sprite : Drawable
         _vertices[VERT_X_INDEX + (SPRITE_VERTEX_LENGTH * 3)] += _pw;
         
         x = _x;
+
+        bufferVertices();
     }
 
     public void setYPos(int _y)
@@ -79,6 +147,8 @@ public class Sprite : Drawable
         _vertices[VERT_Y_INDEX + (SPRITE_VERTEX_LENGTH * 3)] -= _ph;
         
         y = _y;
+
+        bufferVertices();
     }
 
     public void setPos(XYPos pos)
@@ -104,6 +174,8 @@ public class Sprite : Drawable
         
         x = _x;    
         y = _y; 
+        
+        bufferVertices();
     }
 
     public XYPos getPos()
@@ -111,42 +183,24 @@ public class Sprite : Drawable
         return new XYPos(x, y);
     }
 
-    public void draw()
-    {
-        if (vertexBuffer == null)
-            stderr.printf("Buffer on object not set!\n");
-        else 
-        {
-            bufferVertices();
-            bufferElements();
-        }
-    }
-
-
     public void bufferVertices()
     {
-        //vertexBuffer.bind();
-
-        // TODO change to bufferSubData
-        //glBufferData(GL_ARRAY_BUFFER, 
-        //    (GLsizeiptr)sizeof(GLfloat) * vertices.length, 
-        //    (GLvoid[])vertices, 
-        //    GL_STATIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 
-            (GLsizeiptr)sizeof(GLfloat) * _vertices.length * _index, 
+            (GLsizeiptr)sizeof(GLfloat) * _vertices.length * index, 
             (GLsizeiptr)sizeof(GLfloat) * _vertices.length, 
             (GLvoid[])_vertices
         );
-       //stdout.printf("Sprite #%d buffered\n", (int)_index);
-        //glBindBuffer(GL_ARRAY_BUFFER, 0);
-        
-        //g_drawableVerticesCounter++;
-        //g_drawableVerticesNo += vertices.length;
+       
     }
-    
+
+    public float[] getVerts()
+    {
+        return _vertices;
+    }
+
     public void buffer()
     {
         bufferVertices();
-        bufferElements();
+        //bufferElements();
     }
 }

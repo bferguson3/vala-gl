@@ -15,7 +15,29 @@ public class Texture : GLib.Object
         myImage = img; 
     }
 
-    public void buffer()
+    public void bufferToSize(int _w, int _h)
+    {
+        glBindTexture(GL_TEXTURE_2D, texture); // < future calls to TexImage go to this texture. 
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+        glTexImage2D(GL_TEXTURE_2D,             // type
+                    0,                          // level (for mipmaps)
+                    RES_IMG_FORMAT,             // external format GL_RGBA8
+                    _w, 
+                    _h,                    // w, h
+                    0,                          // must be 0
+                    GL_BGRA, GL_UNSIGNED_BYTE,  // internal format and type : NOTE:
+                    // Endienness is all wonky here, so GL_BGRA!
+                    (GLbyte[]?)myImage.data);       // pointer to data 
+
+        glGenerateMipmap(GL_TEXTURE_2D); // done after glTexImage2D
+    }
+
+    public virtual void buffer()
     {
         glBindTexture(GL_TEXTURE_2D, texture); // < future calls to TexImage go to this texture. 
         

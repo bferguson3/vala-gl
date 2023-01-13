@@ -23,7 +23,17 @@ public class VertexBuffer : GLib.Object
             null, 
             GL_STATIC_DRAW);
     }
-
+    /*
+    public VertexBuffer.forTileMap(TileMap t)
+    {
+        glGenBuffers(1, (GLuint[])buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, 
+            t.getVertexCount() * sizeof(SpriteVertex), 
+            null, 
+            GL_STATIC_DRAW);
+    }
+    */
     // destructor 
     ~VertexBuffer()
     {

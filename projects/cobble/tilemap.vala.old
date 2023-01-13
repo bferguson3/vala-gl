@@ -1,0 +1,115 @@
+// TileMap.vala 
+
+using GL;
+using Cobble;
+
+public class TileMap : GLib.Object 
+{
+    public int w;
+    public int h;
+    public int tileWidth;
+    public int tileHeight;
+
+    private float tile_px_w;
+    private float tile_px_h;
+
+    //private TileVertex[] mapVertices;
+    private SpriteVertex[] mapVertices;
+
+    public TileMap(int _w, int _h, int _tileWidth, int _tileHeight)
+    {
+        w = _w;
+        h = _h;
+        
+        tileWidth = _tileWidth;
+        tileHeight = _tileHeight;
+        
+        tile_px_w = tileWidth * PIXEL_WIDTH;
+        tile_px_h = tileHeight * PIXEL_HEIGHT;
+
+        // allocate verts
+        //mapVertices = new TileVertex[ ((w + 1) * (h + 1)) ];
+        mapVertices = new SpriteVertex[ ((w + 1) * (h + 1)) ];
+
+        int ctr = 0;
+        float row = 1.0f;
+        for(int y = 0; y < (h + 1); y++)
+        {
+            float col = -1.0f;
+            for(int x = 0; x < (w + 1); x++)
+            {
+                mapVertices[ctr].x = col;
+                mapVertices[ctr].y = row;
+                mapVertices[ctr].r = 1.0f;
+                mapVertices[ctr].g = 1.0f;
+                mapVertices[ctr].b = 1.0f;
+                ctr++;
+                col += tile_px_w;
+            }
+            row -= tile_px_h;
+        }
+
+        //print_verts();
+    }
+
+    ~TileMap()
+    {
+        
+    }
+
+    public void print_verts()
+    {
+        for(int i = 0 ; i < mapVertices.length; i ++)
+        {
+            stdout.printf("%d X: %f\n", i, mapVertices[i].x);
+            stdout.printf("%d Y: %f\n", i, mapVertices[i].y);
+            stdout.printf("%d U: %f\n", i, mapVertices[i].u);
+            stdout.printf("%d V: %f\n", i, mapVertices[i].v);
+        }
+    }
+
+    public long getVertexCount()
+    {
+        return mapVertices.length;
+    }
+
+    public void print_vert(SpriteVertex v)
+    {
+        stdout.printf(" X: %f\n",  v.x);
+        stdout.printf(" Y: %f\n",  v.y);
+        stdout.printf(" U: %f\n",  v.u);
+        stdout.printf(" V: %f\n",  v.v);
+        stdout.printf(" R: %f\n",  v.r);
+        stdout.printf(" G: %f\n",  v.g);
+        stdout.printf(" B: %f\n",  v.b);
+    }
+
+    public void bufferVertices(int index)
+    {
+        //nt r = (w + 1) % index;
+        float test[]= {
+            mapVertices[index].x, mapVertices[index].y,
+            mapVertices[index].r, mapVertices[index].g, mapVertices[index].b, 
+            0.0f, 0.0f, 
+
+            mapVertices[index+1].x, mapVertices[index+1].y,
+            mapVertices[index+1].r, mapVertices[index+1].g, mapVertices[index+1].b, 
+            1.0f, 0.0f, 
+
+            mapVertices[index + w + 1].x, mapVertices[index + w + 1].y,
+            mapVertices[index + w + 1].r, mapVertices[index + w + 1].g, mapVertices[index + w + 1].b, 
+            0.0f, 1.0f, 
+
+            mapVertices[index+w + 2].x, mapVertices[index + w + 2].y,
+            mapVertices[index+w + 2].r, mapVertices[index + w + 2].g, mapVertices[index + w + 2].b, 
+            1.0f, 1.0f
+        };
+
+        
+        glBufferSubData(GL_ARRAY_BUFFER, 
+            index * (sizeof(float) * 7 * 4), 
+            sizeof(float) * 7 * 4, 
+            (GLvoid[])test);
+
+        }
+}
