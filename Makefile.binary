@@ -27,11 +27,13 @@ LIBS:=\
 	-X -L/opt/homebrew/lib/ -X -lepoxy \
 	-X -lglib-2.0 \
 	-X -L./glfw/lib-arm64/ -X -lglfw3 \
-	-X -lfreeimage -X -lgobject-2.0 # -X -lgio-2.0 
+	-X -lfreeimage -X -lgobject-2.0 \
+	-X -lm # for nix 
+#-lgio2.0 
 FRAMEWORKS:=\
-	-X -framework -X Cocoa \
-	-X -framework -X IOKit 
-
+#	-X -framework -X Cocoa \
+#	-X -framework -X IOKit 
+# on nix, comment out the above
 
 default: 
 	$(VC) $(OPTS) \

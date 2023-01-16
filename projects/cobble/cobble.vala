@@ -62,11 +62,14 @@ namespace Cobble
         GLFW.set_hint_bool(GLFW.WindowHint.RESIZABLE, true);  // resize 
         GLFW.set_hint(GLFW.WindowHint.SAMPLES, 2);            // no AA
 
-        var myNewWindow = new GLFW.Window(1280, 720, "Hello World", null, null);
-        //myNewWindow.set_size(640, 400);
+	var myMonitor = GLFW.get_primary_monitor();
+        var myNewWindow = new GLFW.Window(320, 240, "Hello World", null, null);
+        myNewWindow.set_size(320, 240);
         myNewWindow.make_context_current();
+	//myNewWindow.set_window_monitor(myMonitor, 0, 0, 320, 240, 60);
+
         
-        set_resolution(640, 200);
+        //set_resolution(640, 200);
         
         return myNewWindow;
     }

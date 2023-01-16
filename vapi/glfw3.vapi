@@ -42,6 +42,8 @@ namespace GLFW {
 		public unowned Monitor? monitor {
 			[CCode (cname = "glfwGetWindowMonitor")]
 			get;
+			//[CCode (cname = "glfwSetWindowMonitor")]
+			//set;
 		}
 
 		public unowned Cursor? cursor {
@@ -69,6 +71,11 @@ namespace GLFW {
 			[CCode (cname = "glfwSetWindowShouldClose")]
 			set;
 		}
+		[CCode (cname = "glfwSetWindowMonitor")]
+		public void set_window_monitor (Monitor? monitor, 
+			int xpos, int ypos, 
+			int width, int height, 
+			int refreshRate);
 
 		[CCode (cname = "glfwSetWindowCloseCallback")]
 		public void set_close_callback (WindowCloseFunc? c);
@@ -160,7 +167,7 @@ namespace GLFW {
 		[CCode (cname = "glfwSwapBuffers")]
 		public void swap_buffers ();
 	}
-
+	
 	[CCode (cname = "GLFWcursor", free_function = "glfwDestroyCursor")]
 	[Compact]
 	public class Cursor {
@@ -180,7 +187,7 @@ namespace GLFW {
 	public delegate void MonitorFunc (Monitor monitor, int event);
 
 	[Compact]
-	[CCode (cname = "GLFWmonitor")]
+	[CCode (cname = "GLFWmonitor", free_function="free")]
 	public class Monitor {
 		public string name {
 			[CCode (cname = "glfwGetMonitorName")]
