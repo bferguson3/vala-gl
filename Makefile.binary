@@ -31,8 +31,8 @@ LIBS:=\
 	-X -lm # for nix 
 #-lgio2.0 
 FRAMEWORKS:=\
-#	-X -framework -X Cocoa \
-#	-X -framework -X IOKit 
+	-X -framework -X Cocoa \
+	-X -framework -X IOKit 
 # on nix, comment out the above
 
 default: 

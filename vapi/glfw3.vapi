@@ -167,6 +167,8 @@ namespace GLFW {
 		[CCode (cname = "glfwSwapBuffers")]
 		public void swap_buffers ();
 	}
+	[CCode (cname = "glfwGetPrimaryMonitor")]
+	public Monitor* get_primary_monitor ();
 	
 	[CCode (cname = "GLFWcursor", free_function = "glfwDestroyCursor")]
 	[Compact]
@@ -225,9 +227,6 @@ namespace GLFW {
 
 	[CCode (cname = "glfwGetMonitors")]
 	public Monitor[]? get_monitors ();
-
-	[CCode (cname = "glfwGetPrimaryMonitor")]
-	public Monitor? get_primary_monitor ();
 
 	[CCode (cname = "GLFWwindowclosefun", has_target = false)]
 	public delegate void WindowCloseFunc (Window window);

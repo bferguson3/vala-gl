@@ -73,12 +73,8 @@ static int main(string[] args)
     unbind_all();
 
     sp.use(); // tie to uniform calls
-    var transUnif = sp.AddUniform("model");
-    
-    Mat4 rotMat = new Mat4.Identity(1.0f); // create a new identity matrix: 1, 0, 0, 0 > 0, 1, 0, 0 ...
-    //rotMat.rotate(180.0f, new Vec3(0.0f, 0.0f, 1.0f)); // rotate 180 degrees (right) on the Z axis 
-    rotMat.scale(0.5f, 0.5f, 0.5f);
-    sp.SetUniformMatrix(transUnif, rotMat);
+    Mat4 model = new Mat4.Identity(1.0f); // create a new identity matrix: 1, 0, 0, 0 > 0, 1, 0, 0 ...
+    model.scale(0.5f, 0.5f, 0.5f);
     
     /*
     tm = new TileMap(20, 12, 16, 16);
@@ -95,32 +91,18 @@ static int main(string[] args)
      */
 
     unbind_all();
-    // 4 verts 
 
-    
     /* SETUP VIEW  */
     var view = lookAt(1.2f, 1.2f, 1.2f,  // 1 meter up, 1 meter back?
         0.0f, 0.0f, 0.0f, 
         0.0f, 1.0f, 0.0f);
-    var viewUnif = sp.AddUniform("view");
-    
-
     var proj = perspective(rads(45.0f), 1280.0f / 720.0f , 0.1f, 10.0f);
-    
-    proj.print();
-    view.print();
-    //rotMat.print();
-
-    var pvmmat = new Mat4.Copy(rotMat);
-    pvmmat.mul(view);
-    pvmmat.mul(proj);
-    //pvmmat.print();
     var alphaAttr = sp.AddUniform("alpha");
     var pvm = sp.AddUniform("pvm");
     // clean up for draw 
     unbind_all();
     //img = null; 
-    float rot = 1.0f;
+    float rot = -1.0f;
     // Main Loop 
     while(!cobbleWindow.should_close)
     {
@@ -131,14 +113,13 @@ static int main(string[] args)
         float fade = (float)(Math.sin(runTime) + 1.25f)/ 2.0f;
         sp.use();
         sp.SetUniform(alphaAttr, new Vec1(fade));
-        var pmat = new Mat4.Copy(rotMat);
-        rot+=0.1f;
+        var pmat = new Mat4.Copy(model);
+        rot -= 0.1f;
         pmat.rotate(rot, new Vec3(0.0f, 0.0f, 1.0f));
         pmat.mul(view);
         pmat.mul(proj);
         sp.SetUniformMatrix(pvm, pmat);
         
-
         cobble_draw(); 
         
         // Print FPS

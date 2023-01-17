@@ -137,22 +137,11 @@ public class Mat4 : Matrix
 
     private float[] get_zrot_formula(float r)
     { 
-        /*
         float formula[16] = { 
-            (float)cos(theta), (float)sin(theta)*-1, (float)sin(theta),  0.0f, 
-            (float)sin(theta), (float)cos(theta), (float)sin(theta)*-1,  0.0f, 
-            (float)sin(theta)*-1, (float)sin(theta), (float)cos(theta),   0.0f, 
-            0.0f,              0.0f,             0.0f,                   1.0f
-        };
-         */
-        // the X Y or Z aspect of the matrix will be inverse normalized. 
-        // a rotation axis of 0, 0, 1.0 will normalize x and y of the fomula matrix to 1 and z to 0. 
-        
-        float formula[16] = { 
-            (float)cos(r), (float)sin(r)*-1, 0.0f,  0.0f, 
-            (float)sin(r), (float)cos(r),    0.0f,  0.0f, 
-            0.0f, 0.0f,  1.0f, 0.0f, 
-            0.0f, 0.0f,  0.0f, 1.0f
+            (float)cos(r), (float)sin(r) * -1, 0.0f,  0.0f, 
+            (float)sin(r), (float)cos(r),      0.0f,  0.0f, 
+            0.0f,          0.0f,               1.0f, 0.0f, 
+            0.0f,          0.0f,               0.0f, 1.0f
         };
          
         return formula;
@@ -174,10 +163,10 @@ public class Mat4 : Matrix
     { 
         
         float formula[16] = { 
-            (float)cos(theta), 0.0f, (float)sin(theta),  0.0f, 
-            0.0f, 1.0f,    (float)sin(theta)*-1,  0.0f, 
-            (float)sin(theta)*-1, 0.0f,  (float)cos(theta), 0.0f, 
-            0.0f, 0.0f,  0.0f, 1.0f
+            (float)cos(theta),      0.0f, (float)sin(theta) * -1, 0.0f, 
+            0.0f,                   1.0f, 0.0f,                   0.0f, 
+            (float)sin(theta),      0.0f, (float)cos(theta),      0.0f, 
+            0.0f,                   0.0f, 0.0f,                   1.0f
         };
          
         return formula;
@@ -187,10 +176,10 @@ public class Mat4 : Matrix
     { 
         
         float formula[16] = { 
-            1.0f, 0.0f, 0.0f,  0.0f, 
-            0.0f, (float)cos(theta),    (float)sin(theta)*-1,  0.0f, 
-            0.0f, (float)sin(theta),  (float)cos(theta), 0.0f, 
-            0.0f, 0.0f,  0.0f, 1.0f
+            1.0f, 0.0f,               0.0f,                   0.0f, 
+            0.0f, (float)cos(theta),  (float)sin(theta) * -1, 0.0f, 
+            0.0f, (float)sin(theta),  (float)cos(theta),      0.0f, 
+            0.0f, 0.0f,               0.0f,                   1.0f
         };
          
         return formula;
