@@ -1,5 +1,5 @@
 #!/bin/sh
-make -f Makefile.binary PROJECT=projects/cobble
+make -f Makefile.mac PROJECT=projects/cobble
 cd projects/cobble
 ./app
 

@@ -1,5 +1,5 @@
-# For MacOS / M1 silicon (arm64)
-# YOU PROBABLY HAVE TO MAKE YOUR OWN MAKEFILE FOR WINDOWS/LINUX!
+# For UNIX 
+
 APPNAME:=app
 VC     :=valac
 OPTS   :=-v --vapidir=./vapi/
@@ -16,24 +16,17 @@ PKGS:=\
 	--pkg gl \
 	--pkg gio-2.0 
 INCLUDES:=\
-	-X -I/opt/homebrew/Cellar/libepoxy/1.5.10/include \
-	-X -I/opt/homebrew/include/ \
 	-X -I./glfw/include/ \
-	-X -I/Library/Developer/CommandLineTools/usr/include/c++/v1/ 
 #	-X -I../glib-emscripten/target/include \
 #	-X -I../glib-emscripten/target/include/glib-2.0 
 	
 LIBS:=\
-	-X -L/opt/homebrew/lib/ -X -lepoxy \
+    -X -lepoxy \
 	-X -lglib-2.0 \
 	-X -L./glfw/lib-arm64/ -X -lglfw3 \
 	-X -lfreeimage -X -lgobject-2.0 \
 	-X -lm # for nix 
 #-lgio2.0 
-FRAMEWORKS:=\
-#	-X -framework -X Cocoa \
-#	-X -framework -X IOKit 
-# on nix, comment out the above
 
 default: 
 	$(VC) $(OPTS) \
@@ -41,7 +34,6 @@ default:
 		$(PKGS) \
 		$(INCLUDES) \
 		$(LIBS) \
-		$(FRAMEWORKS) \
 		-o $(PROJECT)/$(APPNAME)
 
 c:
@@ -50,14 +42,9 @@ c:
 		$(PKGS) \
 		$(INCLUDES) \
 		$(LIBS) \
-		$(FRAMEWORKS) \
 		-o $(PROJECT)/$(APPNAME)
 
-genie:
-	$(VC) $(OPTS) \
-		$(GSRC) \
-		$(PKGS) \
-		$(INCLUDES) \
-		$(LIBS) \
-		$(FRAMEWORKS) \
-		-o $(PROJECT)/$(APPNAME)
+clean: 
+	rm $(PROJECT)/*.c
+	rm $(PROJECT)/$(APPNAME)
+	
