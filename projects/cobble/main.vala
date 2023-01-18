@@ -8,6 +8,7 @@ using Cobble;
 
 static int main(string[] args)
 {
+    GLuint a;
     /************
     * Cobble
     ************/

@@ -49,18 +49,19 @@ public class Shader : GLib.Object
         var vs = File.new_for_path(path);
         
         char _tmp[1] = { 0 };
-        Bytes data = new Bytes((uint8[])_tmp);
-        
+        //Bytes data = new Bytes((uint8[])_tmp); // windows fix 
+        uint8[] data;
         try 
         { 
-            data = vs.load_bytes(); 
+            //data = vs.load_bytes(); // windows fix 
+            vs.load_contents(null, out data, null);
         } catch(Error e) 
         { 
             stderr.printf("%s\n", e.message); 
         }
         
-        string vss = (string)data.get_data();
-        return vss;
+        //string vss = (string)data.get_data(); // windows fix 
+        return (string)data;
     }
 
 

@@ -16,7 +16,7 @@ public class Sprite : Drawable
     public int w { public get; private set; }
     public int h { public get; private set; }
 
-    public Sprite(unowned Texture t, int myTexWidth, int myTexHeight)
+    public Sprite(Texture t, int myTexWidth, int myTexHeight)
     {
         x = (SCREEN_WIDTH  / 2) - (myTexWidth  / 2); 
         y = (SCREEN_HEIGHT / 2) - (myTexHeight / 2);

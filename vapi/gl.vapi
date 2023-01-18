@@ -2,7 +2,7 @@
 
 [CCode (cprefix = "GL", gir_version = "1.0", lower_case_cprefix = "gl_")]
 namespace GL {
-	[CCode (cheader_filename = "epoxy/gl.h", cname = "GLsync")]
+	[CCode (cheader_filename = "epoxy/gl.h, epoxy/glx.h", cname = "GLsync")]
 	[Compact]
 	public class GLsync {
 	}
