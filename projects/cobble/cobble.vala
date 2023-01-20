@@ -7,8 +7,8 @@ namespace Cobble
     const uint8 SPRITE_VERTEX_LENGTH = 7;
     const int RES_IMG_FORMAT = GL.GL_RGBA8;
 
-    int SCREEN_WIDTH  = 640;
-    int SCREEN_HEIGHT = 200;
+    int SCREEN_WIDTH  = 320;
+    int SCREEN_HEIGHT = 240;
     float PIXEL_WIDTH  = 1.0f; // 0.00625f; // In one coordinate plane (1/160)f
     float PIXEL_HEIGHT = 1.0f;  //0.010f;   // (1/100)f
 
@@ -43,14 +43,6 @@ namespace Cobble
     }
 
 
-    public static void set_resolution(int w, int h)
-    {
-        SCREEN_WIDTH = w;
-        SCREEN_HEIGHT = h;
-        PIXEL_WIDTH  = (1.0f / (SCREEN_WIDTH /2));   
-        PIXEL_HEIGHT = (1.0f / (SCREEN_HEIGHT/2)); 
-    }
-
     static GLFW.Window setup_window()
     {
         // MacOS bullshit:
@@ -58,13 +50,15 @@ namespace Cobble
         GLFW.set_hint(GLFW.WindowHint.CONTEXT_VERSION_MINOR, 1);
         GLFW.set_hint(GLFW.WindowHint.OPENGL_FORWARD_COMPAT, GL_TRUE);
         GLFW.set_hint(GLFW.WindowHint.OPENGL_PROFILE, GLFW.OpenGLProfile.CORE);
+        GLFW.set_hint(GLFW.WindowHint.COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
+        GLFW.set_hint(GLFW.WindowHint.COCOA_GRAPHICS_SWITCHING, GL_FALSE);
         // Normal window setup:
         GLFW.set_hint_bool(GLFW.WindowHint.RESIZABLE, true);  // resize 
         GLFW.set_hint(GLFW.WindowHint.SAMPLES, 2);            // no AA
 
 	    var myMonitor = GLFW.get_primary_monitor();
-        var myNewWindow = new GLFW.Window(320, 240, "Hello World", null, null);
-        myNewWindow.set_size(320, 240);
+        var myNewWindow = new GLFW.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", null, null);
+        //myNewWindow.set_size(SCREEN_WIDTH, SCREEN_HEIGHT);
         myNewWindow.make_context_current();
         // makes it full screen:
         //myNewWindow.set_window_monitor(myMonitor, 0, 0, 320, 240, 60);
@@ -90,6 +84,9 @@ namespace Cobble
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindRenderbuffer(GL_RENDERBUFFER, 0);
         glUseProgram(0);
     }
 
@@ -123,34 +120,6 @@ namespace Cobble
         
     }
 
-    public static void cobble_draw()
-    {
-        // clear screen
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        // draw objects    
-        
-        // sprite vao 
-        double spritestart = GLFW.get_time();
-            vao.bind(); 
-            vbuffer.bind();
-            for(int i = 0; i < 64; i++)
-            {
-                if(cobble_sprites[i] != null)
-                    cobble_sprites[i].draw(); // rebuffer vertices and texture 
-                    glDrawArrays(GL_TRIANGLE_STRIP, 4 * i, 4);
-            }
-        double spriteend = GLFW.get_time();
-        //stdout.printf("sprite time %f\n", spriteend-spritestart);
-        
-        unbind_all();
-
-        cobbleWindow.swap_buffers(); // flip()
-        ////
-        double frame_end = GLFW.get_time();
-        deltaTime = frame_end - frame_start;
-        runTime += deltaTime;
-    }
 
     public struct SpriteVertex { 
         public float x; 

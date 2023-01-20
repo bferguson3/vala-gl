@@ -36,6 +36,7 @@ public class Sprite : Drawable
              1.0f, 1.0f           // uv Bottom-right
         };
          */
+         
          _vertices = {
             -0.5f, -0.5f,       // pos 
             1.0f, 1.0f, 1.0f,   // color
@@ -100,7 +101,8 @@ public class Sprite : Drawable
     public void draw()
     {
         if(tex != null)
-            tex.bufferToSize(w, h);
+            //tex.bufferToSize(w, h);
+            tex.bind();
         else 
             stderr.printf("COBBLE ERROR: Sprite %u texture is null\n", index);
             
